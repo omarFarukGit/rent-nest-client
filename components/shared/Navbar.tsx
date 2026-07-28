@@ -39,9 +39,7 @@ export function Navbar() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link href="/" className="shrink-0">
-            <span className="text-2xl font-bold text-primary">
-              NextJs Press
-            </span>
+            <span className="text-2xl font-bold text-primary">Rent Nest</span>
           </Link>
 
           {/* Nav Links */}
