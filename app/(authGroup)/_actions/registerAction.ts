@@ -1,6 +1,16 @@
 "use server"
 
-export const registerAction = async (prevState: any, fromData: FormData) => {
+type TPreveState = {
+  name: string
+  email: string
+  password: string
+  role: "TENANT" | "LANDLORD"
+}
+
+export const registerAction = async (
+  prevState: TPreveState,
+  fromData: FormData
+) => {
   const payload = {
     name: fromData.get("name"),
     email: fromData.get("email"),

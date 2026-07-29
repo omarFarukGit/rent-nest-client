@@ -13,7 +13,7 @@ const LogingForm = () => {
   const router = useRouter()
 
   useEffect(() => {
-    // if (!state.success) return
+    if (!state) return
 
     if (state.success) {
       toast.success(state.message)
@@ -38,7 +38,9 @@ const LogingForm = () => {
           placeholder="Enter your password"
           required
         ></Input>
-        <Button type="submit">{pending ? "submiting" : "login"}</Button>
+        <Button disabled={pending} type="submit">
+          {pending ? "submiting" : "login"}
+        </Button>
       </Card>
     </form>
   )

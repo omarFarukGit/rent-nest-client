@@ -15,7 +15,7 @@ const RegisterFrom = () => {
   useEffect(() => {
     if (!state) return
     if (state.success) {
-      toast.success('user created successfylly plaese loin')
+      toast.success("user created successfylly plaese loin")
       setTimeout(() => {
         router.push("/login")
       }, 1000)
@@ -56,8 +56,8 @@ const RegisterFrom = () => {
           <option value="LANDLORD">Landlord</option>
         </select>
 
-        <Button type="submit" className="w-full">
-          Register
+        <Button disabled={pending} type="submit" className="w-full">
+          {pending ? "Registering..." : "Register"}
         </Button>
       </Card>
     </form>
