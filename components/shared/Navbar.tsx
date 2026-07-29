@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { Button } from "../ui/button"
 import { TUser } from "@/types/UserType"
+import { logout } from "@/services/logOut"
 
 // Navigation items configuration
 const navItems = [
@@ -38,6 +39,13 @@ type Props = {
 export function Navbar({ user }: Props) {
   const router = useRouter()
 
+  const handleMenuAction = async (action: string) => {
+    if (action === "logout") {
+      await logout()
+      toast.success("Logout successfully")
+      router.push("/login")
+    }
+  }
   return (
     <nav className="sticky top-0 border-b border-border">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -91,7 +99,11 @@ export function Navbar({ user }: Props) {
                   )
                 })}
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={async () => {
+                    handleMenuAction("logout")
+                  }}
+                >
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Log out</span>
                 </DropdownMenuItem>

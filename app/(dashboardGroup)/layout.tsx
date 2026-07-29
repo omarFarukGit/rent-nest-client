@@ -1,16 +1,20 @@
 import { SidebarProvider } from "@/components/ui/sidebar"
 import DashboardSidebar from "./_components/DashboardSidebar"
 import { DashboardNavbar } from "./_components/DashboardNavbar"
+import { TApiResponse, TUser } from "@/types/UserType"
+import { getMe } from "@/services/getMe"
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const user: TApiResponse<TUser> = await getMe()
+  console.log(user, "user")
   return (
     <div>
       <div className="flex min-h-screen flex-col">
-        <DashboardNavbar />
+        <DashboardNavbar user={user.data} />
         <SidebarProvider>
           <div className="flex flex-1">
             <DashboardSidebar />

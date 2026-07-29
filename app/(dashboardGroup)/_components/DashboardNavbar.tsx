@@ -3,8 +3,23 @@
 import { Bell, User, Settings, LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { TUser } from "@/types/UserType"
+import { logout } from "@/services/logOut"
+import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
-export function DashboardNavbar() {
+type Props = {
+  user: TUser
+}
+export function DashboardNavbar({ user }: Props) {
+  const router = useRouter()
+  const handleMenuAction = async (action: string) => {
+    if (action === "logout") {
+      await logout()
+      toast.success("Logout successfully")
+      router.push("/login")
+    }
+  }
   return (
     <nav className="sticky top-0 z-50 border-b border-border bg-background">
       <div className="flex items-center justify-between px-4 py-4 md:px-6">
@@ -38,7 +53,12 @@ export function DashboardNavbar() {
                 Settings
               </button>
               <hr className="my-1 border-border" />
-              <button className="flex w-full items-center gap-2 px-4 py-2 text-sm text-destructive hover:bg-accent">
+              <button
+                onClick={async () => {
+                  handleMenuAction("logout")
+                }}
+                className="flex w-full items-center gap-2 px-4 py-2 text-sm text-destructive hover:bg-accent"
+              >
                 <LogOut className="h-4 w-4" />
                 Logout
               </button>
