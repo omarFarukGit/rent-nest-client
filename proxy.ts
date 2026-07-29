@@ -3,9 +3,17 @@ import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 import { jwtUtils } from "./lib/jwt"
 import { JwtPayload } from "jsonwebtoken"
-import { redirect } from "next/navigation"
+
 
 const AUTH_ROUTES = ["/login", "/register"]
+const PUBLIC_ROUTES = [
+  "/",
+  "/login",
+  "/register",
+  "/properties",
+  "/about",
+  "/contact",
+]
 // This function can be marked `async` if using `await` inside
 export async function proxy(request: NextRequest) {
   const cookieStore = await cookies()
@@ -32,7 +40,7 @@ export async function proxy(request: NextRequest) {
   if (!decodedAccessToken?.success) {
     cookieStore.delete("accessToken")
     cookieStore.delete("refreshToken")
-    return NextResponse.redirect(new URL("/login", request.url))
+    // return NextResponse.redirect(new URL("/login", request.url))
   }
   if (decodedAccessToken?.success) {
     userRole = decodedAccessToken.data.role
@@ -53,6 +61,14 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url))
   } else if (pathName.startsWith("/admin-dashboard") && userRole !== "ADMIN") {
     return NextResponse.redirect(new URL("/", request.url))
+  }
+
+  const isPublic = PUBLIC_ROUTES.some(
+    (route) => pathName === route || pathName.startsWith(route + "/")
+  )
+
+  if (!accessToken && !isPublic) {
+    return NextResponse.redirect(new URL("/login", request.url))
   }
 }
 
