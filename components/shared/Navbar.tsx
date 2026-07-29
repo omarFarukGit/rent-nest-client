@@ -13,6 +13,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { Button } from "../ui/button"
+import { TUser } from "@/types/UserType"
 
 // Navigation items configuration
 const navItems = [
@@ -30,7 +31,11 @@ const userMenuItems = [
   { label: "Settings", icon: Settings, action: "settings" },
 ]
 
-export function Navbar() {
+type Props = {
+  user: TUser
+}
+
+export function Navbar({ user }: Props) {
   const router = useRouter()
 
   return (
@@ -57,42 +62,48 @@ export function Navbar() {
 
           {/* User Dropdown */}
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <div className="cursor-pointer">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
-                  <User className="h-4 w-4 text-primary" />
+          {user && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <div className="cursor-pointer">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+                    <User className="h-4 w-4 text-primary" />
+                  </div>
                 </div>
-              </div>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel className="font-normal">
-                <div className="flex flex-col gap-1">
-                  <p className="text-sm font-medium">{"sinan"}</p>
-                  <p className="text-xs text-muted-foreground">{"sinan"}</p>
-                </div>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {userMenuItems.map((item, index) => {
-                const Icon = item.icon
-                return (
-                  <DropdownMenuItem key={index}>
-                    <Icon className="mr-2 h-4 w-4" />
-                    <span>{item.label}</span>
-                  </DropdownMenuItem>
-                )
-              })}
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>Log out</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col gap-1">
+                    <p className="text-sm font-medium">{user.name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {user.email}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {userMenuItems.map((item, index) => {
+                  const Icon = item.icon
+                  return (
+                    <DropdownMenuItem key={index}>
+                      <Icon className="mr-2 h-4 w-4" />
+                      <span>{item.label}</span>
+                    </DropdownMenuItem>
+                  )
+                })}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
 
-          {/* <Link href={"/login"}>
-            <Button className="cursor-pointer">Login</Button>
-          </Link> */}
+          {!user && (
+            <Link href={"/login"}>
+              <Button className="cursor-pointer">Login</Button>
+            </Link>
+          )}
         </div>
       </div>
     </nav>
