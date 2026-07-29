@@ -10,7 +10,6 @@ export default async function DashboardLayout({
   children: React.ReactNode
 }>) {
   const user: TApiResponse<TUser> = await getMe()
-  console.log(user, "user")
   return (
     <div>
       <div className="flex min-h-screen flex-col">
