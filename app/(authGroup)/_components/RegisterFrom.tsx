@@ -3,10 +3,29 @@
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import { registerAction } from "../_actions/registerAction"
+import { useActionState, useEffect } from "react"
+import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 const RegisterFrom = () => {
+  const [state, action, pending] = useActionState(registerAction, false)
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!state) return
+    if (state.success) {
+      toast.success('user created successfylly plaese loin')
+      setTimeout(() => {
+        router.push("/login")
+      }, 1000)
+    }
+    if (!state.success) {
+      toast.error(state.message)
+    }
+  })
   return (
-    <form action={""}>
+    <form action={action}>
       <Card className="space-y-4 p-5">
         <Input name="name" type="text" placeholder="Enter your Name" required />
 
