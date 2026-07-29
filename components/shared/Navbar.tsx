@@ -40,6 +40,15 @@ export function Navbar({ user }: Props) {
   const router = useRouter()
 
   const handleMenuAction = async (action: string) => {
+    if(action==="dashboard"){
+      if(user.role==='TENANT'){
+        router.push('/dashboard')
+      }else if(user.role==="LANDLORD"){
+        router.push('/landloard-dashboard')
+      }else if(user.role==='ADMIN'){
+        router.push('/admin-dashboard')
+      }
+    }
     if (action === "logout") {
       await logout()
       toast.success("Logout successfully")
@@ -92,7 +101,12 @@ export function Navbar({ user }: Props) {
                 {userMenuItems.map((item, index) => {
                   const Icon = item.icon
                   return (
-                    <DropdownMenuItem key={index}>
+                    <DropdownMenuItem
+                      key={index}
+                      onClick={async () => {
+                        handleMenuAction(item.action)
+                      }}
+                    >
                       <Icon className="mr-2 h-4 w-4" />
                       <span>{item.label}</span>
                     </DropdownMenuItem>
