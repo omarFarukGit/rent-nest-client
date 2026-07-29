@@ -7,6 +7,7 @@ import { loginAction } from "../_actions/loginAction"
 import { useActionState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
+import jwt, { JwtPayload } from "jsonwebtoken"
 
 const LogingForm = () => {
   const [state, action, pending] = useActionState(loginAction, false)
@@ -17,7 +18,14 @@ const LogingForm = () => {
 
     if (state.success) {
       toast.success(state.message)
-      router.push("/")
+      const decodedToken = jwt.decode(state.data.accessToken) as JwtPayload
+      if (decodedToken.role === "TENANT") {
+        router.push("/dashboard")
+      } else if (decodedToken.role === "LANDLORD") {
+        router.push("/landloard-dashboard")
+      } else if (decodedToken.role === "ADMIN") {
+        router.push("/admin-dashboard")
+      }
     }
     if (!state.success) {
       toast.error(state.message)
