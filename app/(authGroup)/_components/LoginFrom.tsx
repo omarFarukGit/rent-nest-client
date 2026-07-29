@@ -3,11 +3,28 @@
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-
+import { loginAction } from "../_actions/loginAction"
+import { useActionState, useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 const LogingForm = () => {
+  const [state, action, pending] = useActionState(loginAction, false)
+  const router = useRouter()
+
+  useEffect(() => {
+    // if (!state.success) return
+
+    if (state.success) {
+      toast.success(state.message)
+      router.push("/")
+    }
+    if (!state.success) {
+      toast.error(state.message)
+    }
+  }, [state, router])
   return (
-    <form action={""} className="space-y-4">
+    <form action={action} className="space-y-4">
       <Card className="space-y-4 p-5">
         <Input
           name="email"
@@ -21,7 +38,7 @@ const LogingForm = () => {
           placeholder="Enter your password"
           required
         ></Input>
-        <Button type="submit">login</Button>
+        <Button type="submit">{pending ? "submiting" : "login"}</Button>
       </Card>
     </form>
   )
