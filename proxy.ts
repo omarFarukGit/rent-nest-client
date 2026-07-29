@@ -3,7 +3,7 @@ import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 import { jwtUtils } from "./lib/jwt"
 import { JwtPayload } from "jsonwebtoken"
-
+import { getNewAccessToken } from "./services/refreshToken"
 
 const AUTH_ROUTES = ["/login", "/register"]
 const PUBLIC_ROUTES = [
@@ -18,10 +18,10 @@ const PUBLIC_ROUTES = [
 export async function proxy(request: NextRequest) {
   const cookieStore = await cookies()
   const pathName = request.nextUrl.pathname
-  const accessToken = cookieStore.get("accessToken")?.value as string
-  const refreshToken = cookieStore.get("refreshToken")?.value as string
+  let accessToken = request.cookies.get("accessToken")?.value as string
+  const refreshToken = request.cookies.get("refreshToken")?.value as string
 
-  const decodedAccessToken = accessToken
+  let decodedAccessToken = accessToken
     ? ((await jwtUtils.verifyToken(
         accessToken,
         process.env.JWT_ACCESS_SECRET as string
@@ -39,7 +39,7 @@ export async function proxy(request: NextRequest) {
 
   if (!decodedAccessToken?.success) {
     cookieStore.delete("accessToken")
-    cookieStore.delete("refreshToken")
+
     // return NextResponse.redirect(new URL("/login", request.url))
   }
   if (decodedAccessToken?.success) {
@@ -70,6 +70,30 @@ export async function proxy(request: NextRequest) {
   if (!accessToken && !isPublic) {
     return NextResponse.redirect(new URL("/login", request.url))
   }
+
+  // get new accessToken to refreshToken and set cookie new accessToken;
+  if (!decodedAccessToken?.success && decodeRefreshToken?.success) {
+    const result = await getNewAccessToken()
+
+    if (result.success) {
+      const newAccessToken = result.data.accessToken
+      cookieStore.set("accessToken", newAccessToken, {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: true,
+        maxAge: 60 * 60 * 24,
+      })
+
+      accessToken = newAccessToken
+      decodedAccessToken = accessToken
+        ? jwtUtils.verifyToken(
+            accessToken,
+            process.env.JWT_ACCESS_SECRET as string
+          )
+        : null
+    }
+  }
+  return NextResponse.next()
 }
 
 export const config = {

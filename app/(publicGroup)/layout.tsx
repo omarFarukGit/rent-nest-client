@@ -8,7 +8,7 @@ export default async function PublicLayout({
   children: React.ReactNode
 }>) {
   const user: TApiResponse<TUser> = await getMe()
-  console.log(user, "user")
+
   return (
     <div>
       <Navbar user={user.data} />
