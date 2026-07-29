@@ -14,22 +14,37 @@ import {
 import { Newspaper, Podcast } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { ISidebarItem, sidebarMenuItems } from "../_config/sidebarMenuItems"
+import { TUser } from "@/types/UserType"
 
-const navItems = [
-  {
-    label: "My Posts",
-    href: "/dashboard/my-posts",
-    icon: Podcast,
-  },
-  {
-    label: "My Profile",
-    href: "/dashboard/my-profile",
-    icon: Podcast,
-  },
-]
+// const navItems = [
+//   {
+//     label: "My Posts",
+//     href: "/dashboard/my-posts",
+//     icon: Podcast,
+//   },
+//   {
+//     label: "My Profile",
+//     href: "/dashboard/my-profile",
+//     icon: Podcast,
+//   },
+// ]
+type Props = {
+  user: TUser
+}
 
-export default function DashboardSidebar() {
+export default function DashboardSidebar({ user }: Props) {
   const pathname = usePathname()
+
+  let navItems: ISidebarItem[] = []
+
+  if (user.role === "TENANT") {
+    navItems = sidebarMenuItems.TENANT
+  } else if (user.role === "LANDLORD") {
+    navItems = sidebarMenuItems.LANDLORD
+  } else if (user.role === "ADMIN") {
+    navItems = sidebarMenuItems.ADMIN
+  }
 
   return (
     <Sidebar

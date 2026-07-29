@@ -16,7 +16,7 @@ export default async function DashboardLayout({
         <DashboardNavbar user={user.data} />
         <SidebarProvider>
           <div className="flex flex-1">
-            <DashboardSidebar />
+            <DashboardSidebar user={user.data} />
             <main className="ml-64 min-w-0 flex-1">{children}</main>
           </div>
         </SidebarProvider>
