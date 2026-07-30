@@ -1,5 +1,6 @@
 import CategoriesSection from "@/components/modules/home/CategoriesSection"
 import CTASection from "@/components/modules/home/CTASection"
+import FeaturedProperties from "@/components/modules/home/FeaturedProperties"
 import HeroSection from "@/components/modules/home/HeroSection"
 import HowItWorks from "@/components/modules/home/HowItWorks"
 import TenantLandlordSection from "@/components/modules/home/TenantLandlordSection"
@@ -13,6 +14,7 @@ export default function HomePage() {
       <CategoriesSection />
       <HowItWorks />
       <WhyRentNest />
+      <FeaturedProperties />
       <TenantLandlordSection />
       <Testimonials />
       <CTASection />
