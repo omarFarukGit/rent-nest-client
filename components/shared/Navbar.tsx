@@ -33,7 +33,7 @@ const userMenuItems = [
 ]
 
 type Props = {
-  user: TUser
+  user?: TUser
 }
 
 export function Navbar({ user }: Props) {
@@ -41,11 +41,11 @@ export function Navbar({ user }: Props) {
 
   const handleMenuAction = async (action: string) => {
     if (action === "dashboard") {
-      if (user.role === "TENANT") {
+      if (user?.role === "TENANT") {
         router.push("/dashboard")
-      } else if (user.role === "LANDLORD") {
+      } else if (user?.role === "LANDLORD") {
         router.push("/landloard-dashboard")
-      } else if (user.role === "ADMIN") {
+      } else if (user?.role === "ADMIN") {
         router.push("/admin-dashboard")
       }
     }

@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 
 export default function HeroSection() {
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative container mx-auto overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image

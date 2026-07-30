@@ -7,7 +7,6 @@ import { loginAction } from "../_actions/loginAction"
 import { useActionState, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { toast } from "sonner"
-import jwt, { JwtPayload } from "jsonwebtoken"
 
 const LogingForm = () => {
   const searchParams = useSearchParams()
