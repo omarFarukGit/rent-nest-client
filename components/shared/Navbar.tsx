@@ -44,7 +44,7 @@ export function Navbar({ user }: Props) {
       if (user?.role === "TENANT") {
         router.push("/dashboard")
       } else if (user?.role === "LANDLORD") {
-        router.push("/landloard-dashboard")
+        router.push("/landlord-dashboard")
       } else if (user?.role === "ADMIN") {
         router.push("/admin-dashboard")
       }

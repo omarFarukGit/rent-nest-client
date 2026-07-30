@@ -57,7 +57,7 @@ export const loginAction = async (
     if (decodedToken.role === "TENANT") {
       redirect("/dashboard")
     } else if (decodedToken.role === "LANDLORD") {
-      redirect("/landloard-dashboard")
+      redirect("/landlord-dashboard")
     } else if (decodedToken.role === "ADMIN") {
       redirect("/admin-dashboard")
     }
