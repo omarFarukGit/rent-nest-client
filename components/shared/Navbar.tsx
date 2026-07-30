@@ -22,7 +22,7 @@ const navItems = [
   { label: "Properties", href: "/properties" },
   { label: "Categories", href: "/categories" },
   { label: "Contact", href: "/contact" },
-  { label: "About", href: "/About" },
+  { label: "About", href: "/about" },
 ]
 
 // User menu items configuration
