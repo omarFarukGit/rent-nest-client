@@ -40,13 +40,13 @@ export function Navbar({ user }: Props) {
   const router = useRouter()
 
   const handleMenuAction = async (action: string) => {
-    if(action==="dashboard"){
-      if(user.role==='TENANT'){
-        router.push('/dashboard')
-      }else if(user.role==="LANDLORD"){
-        router.push('/landloard-dashboard')
-      }else if(user.role==='ADMIN'){
-        router.push('/admin-dashboard')
+    if (action === "dashboard") {
+      if (user.role === "TENANT") {
+        router.push("/dashboard")
+      } else if (user.role === "LANDLORD") {
+        router.push("/landloard-dashboard")
+      } else if (user.role === "ADMIN") {
+        router.push("/admin-dashboard")
       }
     }
     if (action === "logout") {
@@ -56,7 +56,7 @@ export function Navbar({ user }: Props) {
     }
   }
   return (
-    <nav className="sticky top-0 border-b border-border">
+    <nav className="sticky top-0 container mx-auto border-b border-border bg-white/10 backdrop-blur-xl dark:bg-black/20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
