@@ -2,6 +2,11 @@
 
 import PropertyPage from "@/components/modules/property/PropertyPage"
 
-export default function Properties() {
-  return <PropertyPage />
+import { TPropertiesResponse } from "@/types/PropertyType";
+import { getAllProperties } from "../_actions/popertyActions";
+
+export default async function Properties() {
+  const properties: TPropertiesResponse = await getAllProperties();
+  console.log(properties)
+  return <PropertyPage properties={properties} />
 }

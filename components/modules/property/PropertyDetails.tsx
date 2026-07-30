@@ -64,11 +64,16 @@ export default function PropertyDetails({ property }: Props) {
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="relative h-[400px] overflow-hidden rounded-xl">
-          <Image src={""} alt={property.title} fill className="object-cover" />
+          <Image
+            src={property.images[0]}
+            alt={property.title}
+            fill
+            className="object-cover"
+          />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          {property.images.slice(1).map((image) => (
+          {property.images.map((image) => (
             <div
               key={image}
               className="relative h-[190px] overflow-hidden rounded-xl"

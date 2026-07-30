@@ -6,143 +6,147 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
 import PropertyCard from "./PropertyCard"
+import { TPropertiesResponse } from "@/types/PropertyType"
 
-const properties = [
-  {
-    id: "9d6c5285-1df9-4291-9bce-3dd2a916fd0b",
+// const properties = [
+//   {
+//     id: "9d6c5285-1df9-4291-9bce-3dd2a916fd0b",
 
-    title: "Prime Residential Plot",
+//     title: "Prime Residential Plot",
 
-    description:
-      "Prime residential plot with road access and utility connections.",
+//     description:
+//       "Prime residential plot with road access and utility connections.",
 
-    images: ["https://example.com/images/land1.jpg"],
+//     images: ["https://example.com/images/land1.jpg"],
 
-    price: "3500000",
+//     price: "3500000",
 
-    location: "Purbachal, Dhaka",
+//     location: "Purbachal, Dhaka",
 
-    bedrooms: 0,
+//     bedrooms: 0,
 
-    bathrooms: 0,
+//     bathrooms: 0,
 
-    size: "2160",
+//     size: "2160",
 
-    amenities: ["Road Access", "Electricity", "Water Supply", "Gas Connection"],
+//     amenities: ["Road Access", "Electricity", "Water Supply", "Gas Connection"],
 
-    availability: "RENTED",
+//     availability: "RENTED",
 
-    category: {
-      id: "1",
-      name: "Lands",
-    },
+//     category: {
+//       id: "1",
+//       name: "Lands",
+//     },
 
-    averageRating: 5,
+//     averageRating: 5,
 
-    reviewCount: 1,
-  },
-  {
-    id: "9d6c5285-1df9-4291-9bce-3dd2a916fd0b",
+//     reviewCount: 1,
+//   },
+//   {
+//     id: "9d6c5285-1df9-4291-9bce-3dd2a916fd0b",
 
-    title: "Prime Residential Plot",
+//     title: "Prime Residential Plot",
 
-    description:
-      "Prime residential plot with road access and utility connections.",
+//     description:
+//       "Prime residential plot with road access and utility connections.",
 
-    images: ["https://example.com/images/land1.jpg"],
+//     images: ["https://example.com/images/land1.jpg"],
 
-    price: "3500000",
+//     price: "3500000",
 
-    location: "Purbachal, Dhaka",
+//     location: "Purbachal, Dhaka",
 
-    bedrooms: 0,
+//     bedrooms: 0,
 
-    bathrooms: 0,
+//     bathrooms: 0,
 
-    size: "2160",
+//     size: "2160",
 
-    amenities: ["Road Access", "Electricity", "Water Supply", "Gas Connection"],
+//     amenities: ["Road Access", "Electricity", "Water Supply", "Gas Connection"],
 
-    availability: "RENTED",
+//     availability: "RENTED",
 
-    category: {
-      id: "1",
-      name: "Lands",
-    },
+//     category: {
+//       id: "1",
+//       name: "Lands",
+//     },
 
-    averageRating: 5,
+//     averageRating: 5,
 
-    reviewCount: 1,
-  },
-  {
-    id: "9d6c5285-1df9-4291-9bce-3dd2a916fd0b",
+//     reviewCount: 1,
+//   },
+//   {
+//     id: "9d6c5285-1df9-4291-9bce-3dd2a916fd0b",
 
-    title: "Prime Residential Plot",
+//     title: "Prime Residential Plot",
 
-    description:
-      "Prime residential plot with road access and utility connections.",
+//     description:
+//       "Prime residential plot with road access and utility connections.",
 
-    images: ["https://example.com/images/land1.jpg"],
+//     images: ["https://example.com/images/land1.jpg"],
 
-    price: "3500000",
+//     price: "3500000",
 
-    location: "Purbachal, Dhaka",
+//     location: "Purbachal, Dhaka",
 
-    bedrooms: 0,
+//     bedrooms: 0,
 
-    bathrooms: 0,
+//     bathrooms: 0,
 
-    size: "2160",
+//     size: "2160",
 
-    amenities: ["Road Access", "Electricity", "Water Supply", "Gas Connection"],
+//     amenities: ["Road Access", "Electricity", "Water Supply", "Gas Connection"],
 
-    availability: "RENTED",
+//     availability: "RENTED",
 
-    category: {
-      id: "1",
-      name: "Lands",
-    },
+//     category: {
+//       id: "1",
+//       name: "Lands",
+//     },
 
-    averageRating: 5,
+//     averageRating: 5,
 
-    reviewCount: 1,
-  },
+//     reviewCount: 1,
+//   },
 
-  {
-    id: "2",
+//   {
+//     id: "2",
 
-    title: "Modern Family Apartment",
+//     title: "Modern Family Apartment",
 
-    description: "Beautiful apartment with modern facilities.",
+//     description: "Beautiful apartment with modern facilities.",
 
-    images: ["https://example.com/images/home.jpg"],
+//     images: ["https://example.com/images/home.jpg"],
 
-    price: "45000",
+//     price: "45000",
 
-    location: "Dhanmondi, Dhaka",
+//     location: "Dhanmondi, Dhaka",
 
-    bedrooms: 3,
+//     bedrooms: 3,
 
-    bathrooms: 2,
+//     bathrooms: 2,
 
-    size: "1500",
+//     size: "1500",
 
-    amenities: ["Parking", "Lift", "Security"],
+//     amenities: ["Parking", "Lift", "Security"],
 
-    availability: "AVAILABLE",
+//     availability: "AVAILABLE",
 
-    category: {
-      id: "2",
-      name: "Apartment",
-    },
+//     category: {
+//       id: "2",
+//       name: "Apartment",
+//     },
 
-    averageRating: 4.8,
+//     averageRating: 4.8,
 
-    reviewCount: 20,
-  },
-]
+//     reviewCount: 20,
+//   },
+// ]
+type Props = {
+  properties: TPropertiesResponse
+}
 
-export default function PropertyPage() {
+export default function PropertyPage({ properties }: Props) {
   return (
     <div className="mx-auto max-w-7xl space-y-8">
       {/* Header */}
@@ -195,7 +199,7 @@ export default function PropertyPage() {
         <h2 className="text-xl font-semibold">
           Available Properties
           <span className="ml-2 text-muted-foreground">
-            ({properties.length})
+            ({properties.data.length})
           </span>
         </h2>
       </div>
@@ -203,14 +207,14 @@ export default function PropertyPage() {
       {/* Grid */}
 
       <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-        {properties.map((property) => (
+        {properties.data.map((property) => (
           <PropertyCard key={property.id} property={property} />
         ))}
       </div>
 
       {/* Empty State */}
 
-      {properties.length === 0 && (
+      {properties.data.length === 0 && (
         <div className="rounded-xl border p-10 text-center">
           <h3 className="text-xl font-semibold">No Property Found</h3>
 
