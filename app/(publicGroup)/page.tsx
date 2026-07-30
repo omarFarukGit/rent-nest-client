@@ -1,7 +1,11 @@
-import React from "react"
+import CategoriesSection from "@/components/modules/home/CategoriesSection"
+import HeroSection from "@/components/modules/home/HeroSection"
 
-const HomePage = () => {
-  return <div>HomePage</div>
+export default function HomePage() {
+  return (
+    <>
+      <HeroSection />
+       <CategoriesSection />
+    </>
+  )
 }
-
-export default HomePage
