@@ -1,3 +1,4 @@
+import Footer from "@/components/shared/Footer"
 import { Navbar } from "@/components/shared/Navbar"
 import { getMe } from "@/services/getMe"
 import { TApiResponse, TUser } from "@/types/UserType"
@@ -13,6 +14,7 @@ export default async function PublicLayout({
     <div>
       <Navbar user={user.data} />
       {children}
+      <Footer />
     </div>
   )
 }
