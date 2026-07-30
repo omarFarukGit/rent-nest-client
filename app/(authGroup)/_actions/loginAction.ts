@@ -43,22 +43,24 @@ export const loginAction = async (
   }
 
   // optinal redirect
-  if (
-    redirectTo &&
-    typeof redirectTo === "string" &&
-    redirectTo.startsWith("/") &&
-    !redirectTo.startsWith("//")
-  ) {
-    redirect(redirectTo)
-  }
-  //default ridect to login user role base dashboard
-  const decodedToken = jwt.decode(result.data.accessToken) as JwtPayload
-  if (decodedToken.role === "TENANT") {
-    redirect("/dashboard")
-  } else if (decodedToken.role === "LANDLORD") {
-    redirect("/landloard-dashboard")
-  } else if (decodedToken.role === "ADMIN") {
-    redirect("/admin-dashboard")
+  if (result.success) {
+    if (
+      redirectTo &&
+      typeof redirectTo === "string" &&
+      redirectTo.startsWith("/") &&
+      !redirectTo.startsWith("//")
+    ) {
+      redirect(redirectTo)
+    }
+    //default ridect to login user role base dashboard
+    const decodedToken = jwt.decode(result.data.accessToken) as JwtPayload
+    if (decodedToken.role === "TENANT") {
+      redirect("/dashboard")
+    } else if (decodedToken.role === "LANDLORD") {
+      redirect("/landloard-dashboard")
+    } else if (decodedToken.role === "ADMIN") {
+      redirect("/admin-dashboard")
+    }
   }
 
   return result
