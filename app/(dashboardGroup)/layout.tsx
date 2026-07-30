@@ -1,26 +1,29 @@
 import { SidebarProvider } from "@/components/ui/sidebar"
 import DashboardSidebar from "./_components/DashboardSidebar"
 import { DashboardNavbar } from "./_components/DashboardNavbar"
-import { TApiResponse, TUser } from "@/types/UserType"
 import { getMe } from "@/services/getMe"
 
 export default async function DashboardLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode
-}>) {
-  const user: TApiResponse<TUser> = await getMe()
+}) {
+  const user = await getMe()
+
   return (
-    <div>
-      <div className="flex min-h-screen flex-col">
+    <SidebarProvider defaultOpen>
+      <div className="min-h-screen w-full">
+        {/* Navbar */}
         <DashboardNavbar user={user.data} />
-        <SidebarProvider>
-          <div className="flex flex-1">
-            <DashboardSidebar user={user.data} />
-            <main className="ml-64 min-w-0 flex-1">{children}</main>
-          </div>
-        </SidebarProvider>
+
+        <div className="flex">
+          {/* Sidebar */}
+          <DashboardSidebar user={user.data} />
+
+          {/* Content */}
+          <main className="flex-1 p-6">{children}</main>
+        </div>
       </div>
-    </div>
+    </SidebarProvider>
   )
 }

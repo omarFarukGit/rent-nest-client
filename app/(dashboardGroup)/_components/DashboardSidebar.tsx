@@ -1,78 +1,65 @@
-"use client"
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
 
-import { Newspaper, Podcast } from "lucide-react"
-import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { ISidebarItem, sidebarMenuItems } from "../_config/sidebarMenuItems"
-import { TUser } from "@/types/UserType"
+import { sidebarMenuItems, ISidebarItem } from "../_config/sidebarMenuItems";
+import { TUser } from "@/types/UserType";
 
-// const navItems = [
-//   {
-//     label: "My Posts",
-//     href: "/dashboard/my-posts",
-//     icon: Podcast,
-//   },
-//   {
-//     label: "My Profile",
-//     href: "/dashboard/my-profile",
-//     icon: Podcast,
-//   },
-// ]
 type Props = {
-  user: TUser
-}
+  user: TUser;
+};
 
 export default function DashboardSidebar({ user }: Props) {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
-  let navItems: ISidebarItem[] = []
+  let navItems: ISidebarItem[] = [];
 
-  if (user.role === "TENANT") {
-    navItems = sidebarMenuItems.TENANT
-  } else if (user.role === "LANDLORD") {
-    navItems = sidebarMenuItems.LANDLORD
-  } else if (user.role === "ADMIN") {
-    navItems = sidebarMenuItems.ADMIN
+  switch (user.role) {
+    case "TENANT":
+      navItems = sidebarMenuItems.TENANT;
+      break;
+
+    case "LANDLORD":
+      navItems = sidebarMenuItems.LANDLORD;
+      break;
+
+    case "ADMIN":
+      navItems = sidebarMenuItems.ADMIN;
+      break;
+
+    default:
+      navItems = [];
   }
 
   return (
     <Sidebar
-      collapsible="none"
-      className="fixed left-0 h-screen w-64 border-r border-sidebar-border"
+      variant="sidebar"
+      collapsible="offcanvas"
+      className="border-r pt-16"
     >
-      {/* <SidebarHeader>
-        <div className="flex items-center gap-2 px-2 py-1.5">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
-            <Newspaper className="h-4 w-4" />
-          </div>
-          <div className="flex flex-col leading-tight">
-            <span className="text-xs text-sidebar-foreground/70">
-              Dashboard
-            </span>
-          </div>
-        </div>
-      </SidebarHeader> */}
-
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
               {navItems.map((item) => (
                 <SidebarMenuItem key={item.href}>
-                  <SidebarMenuButton asChild isActive={pathname === item.href}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={pathname === item.href}
+                  >
                     <Link href={item.href}>
-                      <item.icon />
+                      <item.icon className="size-4" />
                       <span>{item.label}</span>
                     </Link>
                   </SidebarMenuButton>
@@ -83,5 +70,5 @@ export default function DashboardSidebar({ user }: Props) {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-  )
+  );
 }
