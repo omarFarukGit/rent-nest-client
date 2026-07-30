@@ -1,0 +1,309 @@
+"use client";
+
+import {
+  Calendar,
+  Home,
+  Search,
+  X,
+} from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+
+
+const requests = [
+  {
+    id: 1,
+    property: "Modern Family Apartment",
+    location: "Dhanmondi, Dhaka",
+    rent: "$450/month",
+    date: "30 July 2026",
+    status: "PENDING",
+  },
+  {
+    id: 2,
+    property: "Luxury Villa",
+    location: "Uttara, Dhaka",
+    rent: "$850/month",
+    date: "25 July 2026",
+    status: "APPROVED",
+  },
+  {
+    id: 3,
+    property: "Office Space",
+    location: "Gulshan, Dhaka",
+    rent: "$650/month",
+    date: "20 July 2026",
+    status: "REJECTED",
+  },
+];
+
+
+export default function TenantRentalRequests() {
+
+  return (
+    <div className="space-y-8">
+
+
+      {/* Header */}
+      <div>
+
+        <h1 className="text-3xl font-bold">
+          Rental Requests
+        </h1>
+
+        <p className="mt-2 text-muted-foreground">
+          Track your property rental requests.
+        </p>
+
+      </div>
+
+
+
+      {/* Stats */}
+      <div className="grid gap-5 sm:grid-cols-3">
+
+
+        <div className="rounded-xl border bg-card p-5">
+
+          <p className="text-sm text-muted-foreground">
+            Total Requests
+          </p>
+
+          <h2 className="mt-2 text-3xl font-bold">
+            12
+          </h2>
+
+        </div>
+
+
+
+        <div className="rounded-xl border bg-card p-5">
+
+          <p className="text-sm text-muted-foreground">
+            Approved
+          </p>
+
+          <h2 className="mt-2 text-3xl font-bold text-green-600">
+            5
+          </h2>
+
+        </div>
+
+
+
+        <div className="rounded-xl border bg-card p-5">
+
+          <p className="text-sm text-muted-foreground">
+            Pending
+          </p>
+
+          <h2 className="mt-2 text-3xl font-bold text-yellow-600">
+            4
+          </h2>
+
+        </div>
+
+
+      </div>
+
+
+
+
+
+      {/* Search */}
+      <div className="flex flex-col gap-4 md:flex-row">
+
+        <div className="relative flex-1">
+
+          <Search
+            className="
+              absolute
+              left-3
+              top-3
+              h-4
+              w-4
+              text-muted-foreground
+            "
+          />
+
+
+          <Input
+            placeholder="Search rental requests..."
+            className="pl-10"
+          />
+
+        </div>
+
+
+        <Button variant="outline">
+          Filter
+        </Button>
+
+
+      </div>
+
+
+
+
+
+
+      {/* Requests */}
+      <div className="space-y-5">
+
+
+        {
+          requests.map((request)=>(
+            
+            <div
+              key={request.id}
+              className="
+                rounded-xl
+                border
+                bg-card
+                p-6
+              "
+            >
+
+
+              <div className="
+                flex
+                flex-col
+                gap-5
+                md:flex-row
+                md:items-center
+                md:justify-between
+              ">
+
+
+                {/* Property Info */}
+                <div>
+
+
+                  <div className="
+                    flex
+                    items-center
+                    gap-2
+                  ">
+
+                    <Home className="h-5 w-5 text-primary"/>
+
+
+                    <h2 className="text-lg font-semibold">
+                      {request.property}
+                    </h2>
+
+
+                  </div>
+
+
+
+                  <p className="
+                    mt-2
+                    text-sm
+                    text-muted-foreground
+                  ">
+                    {request.location}
+                  </p>
+
+
+
+                  <p className="mt-2 font-medium">
+                    Rent: {request.rent}
+                  </p>
+
+
+
+                  <div className="
+                    mt-3
+                    flex
+                    items-center
+                    gap-2
+                    text-sm
+                    text-muted-foreground
+                  ">
+
+                    <Calendar className="h-4 w-4"/>
+
+                    {request.date}
+
+                  </div>
+
+
+                </div>
+
+
+
+
+
+                {/* Action */}
+                <div className="
+                  flex
+                  flex-col
+                  items-end
+                  gap-3
+                ">
+
+
+                  <span
+                    className={`
+                      rounded-full
+                      px-4
+                      py-1
+                      text-xs
+                      font-medium
+
+                      ${
+                        request.status === "APPROVED"
+                        ? "bg-green-100 text-green-700"
+                        : request.status === "REJECTED"
+                        ? "bg-red-100 text-red-700"
+                        : "bg-yellow-100 text-yellow-700"
+                      }
+                    `}
+                  >
+
+                    {request.status}
+
+                  </span>
+
+
+
+
+
+                  {
+                    request.status === "PENDING" && (
+
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                      >
+
+                        <X className="mr-2 h-4 w-4"/>
+
+                        Cancel Request
+
+                      </Button>
+
+                    )
+                  }
+
+
+                </div>
+
+
+              </div>
+
+
+            </div>
+
+          ))
+        }
+
+
+
+      </div>
+
+    </div>
+  );
+}

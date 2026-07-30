@@ -1,7 +1,10 @@
-import React from "react"
+// app/dashboard/page.tsx
 
-const RentDashboard = () => {
-  return <div>RentDashboard</div>
+import TenantDashboardHome from "@/components/modules/dashboard/tenant/TenantDashboardHome";
+
+
+export default function DashboardPage() {
+  return (
+    <TenantDashboardHome />
+  );
 }
-
-export default RentDashboard
