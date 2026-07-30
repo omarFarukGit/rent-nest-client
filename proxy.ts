@@ -45,6 +45,16 @@ export async function proxy(request: NextRequest) {
   if (decodedAccessToken?.success) {
     userRole = decodedAccessToken.data.role
   }
+  const isPublic = PUBLIC_ROUTES.some(
+    (route) => pathName === route || pathName.startsWith(route + "/")
+  )
+
+  // authenticated pagess protections
+  if (!accessToken && !isPublic) {
+    const loginUrl = new URL("/login", request.url)
+    loginUrl.searchParams.set("redirectTo", pathName)
+    return NextResponse.redirect(loginUrl)
+  }
 
   // login user dont go login page and register page
   if (accessToken && AUTH_ROUTES.includes(pathName)) {
@@ -61,14 +71,6 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url))
   } else if (pathName.startsWith("/admin-dashboard") && userRole !== "ADMIN") {
     return NextResponse.redirect(new URL("/", request.url))
-  }
-
-  const isPublic = PUBLIC_ROUTES.some(
-    (route) => pathName === route || pathName.startsWith(route + "/")
-  )
-
-  if (!accessToken && !isPublic) {
-    return NextResponse.redirect(new URL("/login", request.url))
   }
 
   // get new accessToken to refreshToken and set cookie new accessToken;
