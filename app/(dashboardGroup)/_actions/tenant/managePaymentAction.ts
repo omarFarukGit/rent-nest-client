@@ -28,3 +28,21 @@ export const createPayment = async (payload: {
   }
   return result
 }
+
+export const getMyPayments = async () => {
+  const cookieStore = await cookies()
+  const accessToken = cookieStore.get("accessToken")?.value as string
+
+  const res = await fetch(`${process.env.BACKEND_URL}/api/payments`, {
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: `accessToken=${accessToken}`,
+    },
+    cache: "no-cache",
+  })
+
+  const result = await res.json()
+  console.log(result)
+
+  return result
+}

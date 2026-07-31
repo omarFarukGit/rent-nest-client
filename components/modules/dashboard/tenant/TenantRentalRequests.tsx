@@ -8,44 +8,6 @@ import { TRentalRequestsResponse } from "@/types/RentType"
 import { useTransition } from "react"
 import { createPayment } from "@/app/(dashboardGroup)/_actions/tenant/managePaymentAction"
 
-const requests = [
-  {
-    id: 1,
-    property: "Modern Family Apartment",
-    location: "Dhanmondi, Dhaka",
-    rent: "$450/month",
-    date: "30 July 2026",
-    status: "PENDING",
-    paymentStatus: "PENDING",
-  },
-  {
-    id: 2,
-    property: "Luxury Villa",
-    location: "Uttara, Dhaka",
-    rent: "$850/month",
-    date: "25 July 2026",
-    status: "APPROVED",
-    paymentStatus: "PENDING",
-  },
-  {
-    id: 3,
-    property: "Office Space",
-    location: "Gulshan, Dhaka",
-    rent: "$650/month",
-    date: "20 July 2026",
-    status: "REJECTED",
-    paymentStatus: "PENDING",
-  },
-  {
-    id: 4,
-    property: "Premium Apartment",
-    location: "Banani, Dhaka",
-    rent: "$700/month",
-    date: "15 July 2026",
-    status: "APPROVED",
-    paymentStatus: "PAID",
-  },
-]
 type Props = {
   requests: TRentalRequestsResponse
 }
@@ -122,7 +84,11 @@ export default function TenantRentalRequests({ requests }: Props) {
                 <div className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
                   <Calendar className="h-4 w-4" />
 
-                  {request.createdAt}
+                  {new Date(request.createdAt).toLocaleDateString("en-GB", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                  })}
                 </div>
               </div>
 
