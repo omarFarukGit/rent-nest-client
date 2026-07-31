@@ -51,7 +51,7 @@ export const updateRentalRequest = async (
   if (result.success) {
     revalidateTag("rentals", { expire: 0 })
   }
-  console.log(result, "action")
+
   return result
 }
 

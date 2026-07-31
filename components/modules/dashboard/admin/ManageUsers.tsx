@@ -93,9 +93,7 @@ export default function ManageUsers({ users }: Props) {
                       const newStatus =
                         user.status === "ACTIVE" ? "BLOCKED" : "ACTIVE"
 
-                      const res = await updateUserStatus(user.id, newStatus)
-
-                      console.log(res)
+                      await updateUserStatus(user.id, newStatus)
                     })
                   }
                 >
@@ -180,8 +178,6 @@ export default function ManageUsers({ users }: Props) {
                               user.id,
                               newStatus
                             )
-
-                            console.log(res)
                           })
                         }
                       >

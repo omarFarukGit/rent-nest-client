@@ -119,10 +119,6 @@ export default function RentalRequests({ rentalRequests }: Props) {
                                   request.id,
                                   "APPROVED"
                                 )
-                                console.log(
-                                  request.id,
-                                  "1837c064-4c46-400a-aa6a-90b654d7406f"
-                                )
                               })
                             }}
                             size="icon"
@@ -135,11 +131,10 @@ export default function RentalRequests({ rentalRequests }: Props) {
                           <Button
                             onClick={() => {
                               startTransition(async () => {
-                                const res = await updateRentalRequest(
+                                await updateRentalRequest(
                                   request.id,
                                   "REJECTED"
                                 )
-                                console.log(request.id)
                               })
                             }}
                             size="icon"
