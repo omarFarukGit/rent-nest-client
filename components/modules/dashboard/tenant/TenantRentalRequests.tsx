@@ -122,8 +122,6 @@ export default function TenantRentalRequests({ requests }: Props) {
                           amount: Number(request.property.price),
                           provider: "STRIPE",
                         })
-
-                        console.log(result)
                       })
                     }}
                   >

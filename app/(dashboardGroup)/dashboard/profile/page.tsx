@@ -1,10 +1,9 @@
 // app/dashboard/profile/page.tsx
 
-import TenantProfile from "@/components/modules/dashboard/tenant/TenantProfile";
+import TenantProfile from "@/components/modules/dashboard/tenant/TenantProfile"
+import { getMe } from "@/services/getMe"
 
-
-export default function ProfilePage() {
-  return (
-    <TenantProfile />
-  );
+export default async function ProfilePage() {
+  const user = await getMe()
+  return <TenantProfile user={user.data} />
 }
