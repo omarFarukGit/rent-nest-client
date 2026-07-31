@@ -49,5 +49,9 @@ export const updateUserStatus = async (
     revalidateTag("users", { expire: 0 })
   }
 
-  return result
+  
+  return {
+    success:true,
+    message:'updated user status'
+  }
 }

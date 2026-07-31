@@ -31,7 +31,7 @@ export interface IUser {
   email: string
   phone: string | null
   role: "ADMIN" | "LANDLORD" | "TENANT"
-  status: "ACTIVE" | "INACTIVE" | "SUSPENDED"
+  status: "ACTIVE" | "BLOCKED"
   address: string | null
   profileImage: string | null
   avatar: string | null

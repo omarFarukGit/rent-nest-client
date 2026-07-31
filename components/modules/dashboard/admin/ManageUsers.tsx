@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { IUser } from "@/types/UserType"
 import { useTransition } from "react"
 import { updateUserStatus } from "@/app/(dashboardGroup)/_actions/admin/manageUserAction"
+import { toast } from "sonner"
 
 type Props = {
   users: IUser[]
@@ -15,6 +16,30 @@ type Props = {
 export default function ManageUsers({ users }: Props) {
   const [isPending, startTransition] = useTransition()
 
+  const handleUpdateStatus = (
+    id: string,
+    currentStatus: "ACTIVE" | "BLOCKED"
+  ) => {
+    startTransition(async () => {
+      try {
+        const newStatus = currentStatus === "ACTIVE" ? "BLOCKED" : "ACTIVE"
+
+        const res = await updateUserStatus(id, newStatus)
+
+        if (res.success) {
+          toast.success(
+            newStatus === "BLOCKED"
+              ? "User has been blocked successfully."
+              : "User has been activated successfully."
+          )
+        } else {
+          toast.error(res.message || "Failed to update user status.")
+        }
+      } catch (error) {
+        toast.error("Something went wrong. Please try again.")
+      }
+    })
+  }
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -88,14 +113,7 @@ export default function ManageUsers({ users }: Props) {
                   size="icon"
                   variant="outline"
                   disabled={isPending}
-                  onClick={() =>
-                    startTransition(async () => {
-                      const newStatus =
-                        user.status === "ACTIVE" ? "BLOCKED" : "ACTIVE"
-
-                      await updateUserStatus(user.id, newStatus)
-                    })
-                  }
+                  onClick={() => handleUpdateStatus(user.id, user.status)}
                 >
                   {user.status === "ACTIVE" ? (
                     <UserX className="h-4 w-4" />
@@ -169,17 +187,7 @@ export default function ManageUsers({ users }: Props) {
                         size="icon"
                         variant="outline"
                         disabled={isPending}
-                        onClick={() =>
-                          startTransition(async () => {
-                            const newStatus =
-                              user.status === "ACTIVE" ? "BLOCKED" : "ACTIVE"
-
-                            const res = await updateUserStatus(
-                              user.id,
-                              newStatus
-                            )
-                          })
-                        }
+                        onClick={() => handleUpdateStatus(user.id, user.status)}
                       >
                         {user.status === "ACTIVE" ? (
                           <UserX className="h-4 w-4" />
