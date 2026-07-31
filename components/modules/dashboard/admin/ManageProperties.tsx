@@ -28,7 +28,6 @@ export default function ManageProperties({ properties }: Props) {
           toast.error(res.message || "Failed to delete property.")
         }
       } catch (error) {
-        console.error(error)
         toast.error("Something went wrong. Please try again.")
       }
     })
