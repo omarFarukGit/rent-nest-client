@@ -5,7 +5,7 @@ import { MoreHorizontal, Search, UserCheck, UserX } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { IUser } from "@/types/UserType"
-import { useActionState, useTransition } from "react"
+import { useTransition } from "react"
 import { updateUserStatus } from "@/app/(dashboardGroup)/_actions/admin/manageUserAction"
 
 type Props = {
