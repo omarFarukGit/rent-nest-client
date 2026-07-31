@@ -8,6 +8,7 @@ import { IRentalRequestResponse } from "@/types/RentalType"
 import Link from "next/link"
 import { useTransition } from "react"
 import { updateRentalRequest } from "@/app/(dashboardGroup)/_actions/admin/manageRentalActions"
+import { toast } from "sonner"
 
 type Props = {
   rentalRequests: IRentalRequestResponse
@@ -15,6 +16,29 @@ type Props = {
 
 export default function RentalRequests({ rentalRequests }: Props) {
   const [isPending, startTransition] = useTransition()
+
+  const handleUpdateRequest = (
+    requestId: string,
+    status: "APPROVED" | "REJECTED"
+  ) => {
+    startTransition(async () => {
+      try {
+        const res = await updateRentalRequest(requestId, status)
+
+        if (res.success) {
+          toast.success(
+            status === "APPROVED"
+              ? "Rental request approved successfully."
+              : "Rental request rejected successfully."
+          )
+        } else {
+          toast.error(res.message || "Failed to update rental request.")
+        }
+      } catch (error) {
+        toast.error("Something went wrong. Please try again.")
+      }
+    })
+  }
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -113,33 +137,25 @@ export default function RentalRequests({ rentalRequests }: Props) {
                       {request.status === "PENDING" && (
                         <>
                           <Button
-                            onClick={() => {
-                              startTransition(async () => {
-                                const res = await updateRentalRequest(
-                                  request.id,
-                                  "APPROVED"
-                                )
-                              })
-                            }}
                             size="icon"
                             variant="outline"
                             className="text-green-600"
+                            disabled={isPending}
+                            onClick={() =>
+                              handleUpdateRequest(request.id, "APPROVED")
+                            }
                           >
                             <Check className="h-4 w-4" />
                           </Button>
 
                           <Button
-                            onClick={() => {
-                              startTransition(async () => {
-                                await updateRentalRequest(
-                                  request.id,
-                                  "REJECTED"
-                                )
-                              })
-                            }}
                             size="icon"
                             variant="outline"
                             className="text-red-600"
+                            disabled={isPending}
+                            onClick={() =>
+                              handleUpdateRequest(request.id, "REJECTED")
+                            }
                           >
                             <X className="h-4 w-4" />
                           </Button>
