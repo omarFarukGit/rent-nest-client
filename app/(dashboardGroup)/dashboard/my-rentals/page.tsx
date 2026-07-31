@@ -1,12 +1,10 @@
 // app/dashboard/my-rentals/page.tsx
 
-import MyRentals from "@/components/modules/dashboard/tenant/MyRentals";
+import MyRentals from "@/components/modules/dashboard/tenant/MyRentals"
+import { getMyRentalRequest } from "../../_actions/tenant/manageRentalActions"
 
+export default async function MyRentalsPage() {
+  const rentals = await getMyRentalRequest()
 
-export default function MyRentalsPage(){
-
-  return (
-    <MyRentals/>
-  );
-
+  return <MyRentals rentals={rentals} />
 }

@@ -3,6 +3,7 @@
 import { Calendar, Home, MapPin, User, CreditCard, Eye } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import { TRentalRequestsResponse } from "@/types/RentType"
 
 const rentals = [
   {
@@ -26,8 +27,11 @@ const rentals = [
     status: "ACTIVE",
   },
 ]
+type Props = {
+  rentals: TRentalRequestsResponse
+}
 
-export default function MyRentals() {
+export default function MyRentals({ rentals }: Props) {
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -62,7 +66,7 @@ export default function MyRentals() {
 
       {/* Rentals */}
       <div className="space-y-6">
-        {rentals.map((rental) => (
+        {rentals.data.map((rental) => (
           <div key={rental.id} className="rounded-xl border bg-card p-6">
             <div className="flex flex-col gap-6 lg:flex-row lg:justify-between">
               {/* Info */}
@@ -70,31 +74,46 @@ export default function MyRentals() {
                 <div className="flex items-center gap-2">
                   <Home className="h-5 w-5 text-primary" />
 
-                  <h2 className="text-xl font-semibold">{rental.property}</h2>
+                  <h2 className="text-xl font-semibold">
+                    {rental.property.title}
+                  </h2>
                 </div>
 
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <MapPin className="h-4 w-4" />
 
-                  {rental.location}
+                  {rental.property.location}
                 </div>
 
                 <div className="flex items-center gap-2 text-sm">
                   <User className="h-4 w-4 text-primary" />
                   Landlord:
-                  <span className="font-medium">{rental.landlord}</span>
+                  <span className="font-medium">{rental.landlord.name}</span>
                 </div>
 
                 <div className="flex items-center gap-2 text-sm">
                   <Calendar className="h-4 w-4 text-primary" />
                   Start:
-                  <span className="font-medium">{rental.startDate}</span>
+                  <span className="font-medium">
+                    {" "}
+                    {new Date(rental.startDate).toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </span>
                 </div>
 
                 <div className="flex items-center gap-2 text-sm">
                   <CreditCard className="h-4 w-4 text-primary" />
                   Next Payment:
-                  <span className="font-medium">{rental.nextPayment}</span>
+                  <span className="font-medium">
+                    {new Date(rental.endDate).toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </span>
                 </div>
               </div>
 
@@ -103,7 +122,9 @@ export default function MyRentals() {
                 <div>
                   <p className="text-sm text-muted-foreground">Monthly Rent</p>
 
-                  <h3 className="text-2xl font-bold">{rental.rent}</h3>
+                  <h3 className="text-2xl font-bold">
+                    {rental.property.price}
+                  </h3>
                 </div>
 
                 <span className="rounded-full bg-green-100 px-4 py-1 text-xs font-medium text-green-700">
