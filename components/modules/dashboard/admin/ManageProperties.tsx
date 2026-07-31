@@ -8,36 +8,7 @@ import { TPropertiesResponse } from "@/types/PropertyType"
 import { useTransition } from "react"
 import { deleteProperty } from "@/app/(dashboardGroup)/_actions/admin/managePorpertyActions"
 import Link from "next/link"
-
-// const properties = [
-//   {
-//     id: 1,
-//     title: "Modern Family Apartment",
-//     owner: "Ahmed Rahman",
-//     location: "Dhanmondi, Dhaka",
-//     type: "APARTMENT",
-//     price: 25000,
-//     status: "AVAILABLE",
-//   },
-//   {
-//     id: 2,
-//     title: "Luxury Villa",
-//     owner: "Sarah Khan",
-//     location: "Uttara, Dhaka",
-//     type: "VILLA",
-//     price: 50000,
-//     status: "RENTED",
-//   },
-//   {
-//     id: 3,
-//     title: "Office Space",
-//     owner: "Hasan Ali",
-//     location: "Gulshan, Dhaka",
-//     type: "OFFICE",
-//     price: 70000,
-//     status: "PENDING",
-//   },
-// ]
+import { toast } from "sonner"
 
 type Props = {
   properties: TPropertiesResponse
@@ -45,6 +16,23 @@ type Props = {
 
 export default function ManageProperties({ properties }: Props) {
   const [isPending, startTransition] = useTransition()
+
+  const handleDeleteProperty = (propertyId: string) => {
+    startTransition(async () => {
+      try {
+        const res = await deleteProperty(propertyId)
+
+        if (res.success) {
+          toast.success("Property deleted successfully.")
+        } else {
+          toast.error(res.message || "Failed to delete property.")
+        }
+      } catch (error) {
+        console.error(error)
+        toast.error("Something went wrong. Please try again.")
+      }
+    })
+  }
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -144,18 +132,12 @@ export default function ManageProperties({ properties }: Props) {
                 </Button>
 
                 <Button
-                  className="cursor-pointer"
                   size="icon"
                   variant="destructive"
+                  disabled={isPending}
+                  onClick={() => handleDeleteProperty(property.id)}
                 >
-                  <Trash2
-                    onClick={() => {
-                      startTransition(async () => {
-                        await deleteProperty(property.id)
-                      })
-                    }}
-                    className="h-4 w-4"
-                  />
+                  <Trash2 className="h-4 w-4" />
                 </Button>
               </div>
             </div>
@@ -231,14 +213,10 @@ export default function ManageProperties({ properties }: Props) {
                       </Button>
 
                       <Button
-                        className="cursor-pointer"
-                        onClick={() => {
-                          startTransition(async () => {
-                            await deleteProperty(property.id)
-                          })
-                        }}
                         size="icon"
                         variant="destructive"
+                        disabled={isPending}
+                        onClick={() => handleDeleteProperty(property.id)}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
