@@ -26,6 +26,9 @@ export type TRentalRequest = {
     phone: string | null
     profileImage: string | null
   }
+  payment: {
+    status: "PAID" | "PENDING" | "FAILED"
+  } | null
 }
 
 export type TRentalRequestsResponse = {

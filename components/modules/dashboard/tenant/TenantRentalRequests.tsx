@@ -7,11 +7,14 @@ import { Input } from "@/components/ui/input"
 import { TRentalRequestsResponse } from "@/types/RentType"
 import { useTransition } from "react"
 import { createPayment } from "@/app/(dashboardGroup)/_actions/tenant/managePaymentAction"
-import { RentalStatisticsResponse } from "@/types/RentalType"
+
+import { toast } from "sonner"
+import { cancelRentalRequest } from "@/app/(dashboardGroup)/_actions/tenant/manageRentalActions"
+import { IRentalStatisticsResponse } from "@/types/RentalType"
 
 type Props = {
   requests: TRentalRequestsResponse
-  stats: RentalStatisticsResponse
+  stats: IRentalStatisticsResponse
 }
 
 export default function TenantRentalRequests({ requests, stats }: Props) {
@@ -116,14 +119,17 @@ export default function TenantRentalRequests({ requests, stats }: Props) {
                 </span>
 
                 {/* Pay Button */}
-
-                {request.status === "APPROVED" && (
+                {request?.payment?.status === "PAID" ? (
+                  <Button variant="outline" size="sm">
+                    Payment Completed
+                  </Button>
+                ) : request.status === "APPROVED" ? (
                   <Button
                     size="sm"
                     disabled={isPending}
                     onClick={() => {
                       startTransition(async () => {
-                        const result = await createPayment({
+                        await createPayment({
                           rentalRequestId: request.id,
                           amount: Number(request.property.price),
                           provider: "STRIPE",
@@ -132,25 +138,33 @@ export default function TenantRentalRequests({ requests, stats }: Props) {
                     }}
                   >
                     <CreditCard className="mr-2 h-4 w-4" />
-
                     {isPending ? "Processing..." : "Pay Now"}
                   </Button>
-                )}
-
-                {/* Paid */}
-
-                {request.status === "PAID" && (
-                  <Button variant="outline" size="sm">
-                    Payment Completed
-                  </Button>
-                )}
+                ) : null}
 
                 {/* Cancel Request */}
 
                 {request.status === "PENDING" && (
-                  <Button variant="destructive" size="sm">
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    disabled={isPending}
+                    onClick={() => {
+                      startTransition(async () => {
+                        const result = await cancelRentalRequest(request.id)
+
+                        if (result.success) {
+                          toast.success("Rental request cancelled successfully")
+                        } else {
+                          toast.error(
+                            result.message || "Failed to cancel request"
+                          )
+                        }
+                      })
+                    }}
+                  >
                     <X className="mr-2 h-4 w-4" />
-                    Cancel Request
+                    {isPending ? "Cancelling..." : "Cancel Request"}
                   </Button>
                 )}
               </div>

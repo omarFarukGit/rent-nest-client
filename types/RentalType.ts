@@ -3,17 +3,9 @@ export type PaymentStatus = "PAID" | "PENDING" | "FAILED"
 export type PaymentProvider = "STRIPE" | "SSLCOMMERZ"
 
 export type RentalRequestStatus =
-  | "PENDING"
-  | "APPROVED"
-  | "REJECTED"
-  | "CANCELLED"
+  "PENDING" | "APPROVED" | "REJECTED" | "CANCELLED"
 
-
-export type PropertyAvailability =
-  | "AVAILABLE"
-  | "RENTED"
-  | "UNAVAILABLE"
-
+export type PropertyAvailability = "AVAILABLE" | "RENTED" | "UNAVAILABLE"
 
 export interface IRentalProperty {
   id: string
@@ -24,7 +16,6 @@ export interface IRentalProperty {
   availability: PropertyAvailability
 }
 
-
 export interface IUserInfo {
   id: string
   name: string
@@ -33,7 +24,6 @@ export interface IUserInfo {
   profileImage: string | null
 }
 
-
 export interface IPayment {
   id: string
   amount: number
@@ -41,7 +31,6 @@ export interface IPayment {
   provider: PaymentProvider
   createdAt: string
 }
-
 
 export interface IRentalRequest {
   id: string
@@ -67,14 +56,12 @@ export interface IRentalRequest {
   updatedAt: string
 }
 
-
 export interface IRentalRequestMeta {
   total: number
   page: number
   limit: number
   totalPages: number
 }
-
 
 export interface IRentalRequestResponse {
   success: boolean
@@ -83,19 +70,17 @@ export interface IRentalRequestResponse {
   data: IRentalRequest[]
 }
 
-
-
-export type RentalStatisticsResponse = {
-  success: boolean
-  message: string
-  data: RentalStatistics
-}
-
-export type RentalStatistics = {
+export interface IRentalStatistics {
   total: number
   pending: number
   approved: number
   rejected: number
   cancelled: number
   completionRate: string
+}
+
+export interface IRentalStatisticsResponse {
+  success: boolean
+  message: string
+  data: IRentalStatistics
 }
