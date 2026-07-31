@@ -82,3 +82,20 @@ export interface IRentalRequestResponse {
   meta: IRentalRequestMeta
   data: IRentalRequest[]
 }
+
+
+
+export type RentalStatisticsResponse = {
+  success: boolean
+  message: string
+  data: RentalStatistics
+}
+
+export type RentalStatistics = {
+  total: number
+  pending: number
+  approved: number
+  rejected: number
+  cancelled: number
+  completionRate: string
+}

@@ -1,9 +1,13 @@
 // app/dashboard/rental-requests/page.tsx
 
 import TenantRentalRequests from "@/components/modules/dashboard/tenant/TenantRentalRequests"
-import { getMyRentalRequest } from "../../_actions/tenant/manageRentalActions"
+import {
+  getMyRentalRequest,
+  getRentalStats,
+} from "../../_actions/tenant/manageRentalActions"
 
 export default async function RentalRequestsPage() {
   const requests = await getMyRentalRequest()
-  return <TenantRentalRequests requests={requests} />
+  const stats = await getRentalStats()
+  return <TenantRentalRequests requests={requests} stats={stats}/>
 }

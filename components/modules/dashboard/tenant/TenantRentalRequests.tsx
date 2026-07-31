@@ -7,12 +7,14 @@ import { Input } from "@/components/ui/input"
 import { TRentalRequestsResponse } from "@/types/RentType"
 import { useTransition } from "react"
 import { createPayment } from "@/app/(dashboardGroup)/_actions/tenant/managePaymentAction"
+import { RentalStatisticsResponse } from "@/types/RentalType"
 
 type Props = {
   requests: TRentalRequestsResponse
+  stats: RentalStatisticsResponse
 }
 
-export default function TenantRentalRequests({ requests }: Props) {
+export default function TenantRentalRequests({ requests, stats }: Props) {
   const [isPending, startTransition] = useTransition()
   return (
     <div className="space-y-8">
@@ -30,19 +32,23 @@ export default function TenantRentalRequests({ requests }: Props) {
         <div className="rounded-xl border bg-card p-5">
           <p className="text-sm text-muted-foreground">Total Requests</p>
 
-          <h2 className="mt-2 text-3xl font-bold">12</h2>
+          <h2 className="mt-2 text-3xl font-bold">{stats.data.total}</h2>
         </div>
 
         <div className="rounded-xl border bg-card p-5">
           <p className="text-sm text-muted-foreground">Approved</p>
 
-          <h2 className="mt-2 text-3xl font-bold text-green-600">5</h2>
+          <h2 className="mt-2 text-3xl font-bold text-green-600">
+            {stats.data.approved}
+          </h2>
         </div>
 
         <div className="rounded-xl border bg-card p-5">
           <p className="text-sm text-muted-foreground">Pending</p>
 
-          <h2 className="mt-2 text-3xl font-bold text-yellow-600">4</h2>
+          <h2 className="mt-2 text-3xl font-bold text-yellow-600">
+            {stats.data.pending}
+          </h2>
         </div>
       </div>
 
