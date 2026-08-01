@@ -1,12 +1,22 @@
-// app/properties/page.tsx
-
 import PropertyPage from "@/components/modules/property/PropertyPage"
+import { getAllProperties } from "../_actions/popertyActions"
+import { TCategoriesResponse } from "@/types/CategoryType"
+import { getAllCategory } from "@/services/category"
 
-import { TPropertiesResponse } from "@/types/PropertyType";
-import { getAllProperties } from "../_actions/popertyActions";
+export default async function PropertiesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{
+    search?: string
+    category?: string
+    minPrice?: string
+    maxPrice?: string
+  }>
+}) {
+  const query = await searchParams
 
-export default async function Properties() {
-  const properties: TPropertiesResponse = await getAllProperties();
+  const properties = await getAllProperties(query);
+  const categories: TCategoriesResponse = await getAllCategory()
 
-  return <PropertyPage properties={properties} />
+  return <PropertyPage properties={properties} categories={categories} />
 }

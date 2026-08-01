@@ -1,22 +1,42 @@
 "use server"
 
-export const getAllProperties = async () => {
-  const res = await fetch(`${process.env.BACKEND_URL}/api/properties`, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-    cache: "force-cache",
-    next: {
-      revalidate: 60 * 60 * 24,
-      tags: ["properties"],
-    },
+import { cookies } from "next/headers"
+
+export const getAllProperties = async (query?: {
+  search?: string
+  category?: string
+  minPrice?: string
+  maxPrice?: string
+  page?: string
+}) => {
+  const cookieStore = await cookies()
+
+  const token = cookieStore.get("accessToken")?.value
+
+  const params = new URLSearchParams()
+
+  Object.entries(query || {}).forEach(([key, value]) => {
+    if (value) {
+      params.append(key, value)
+    }
   })
 
-  const result = await res.json()
+  const res = await fetch(
+    `${process.env.BACKEND_URL}/api/properties?${params.toString()}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      cache: "no-store",
+    }
+  )
 
-  return result
+  if (!res.ok) {
+    throw new Error("Failed to fetch properties")
+  }
+
+  return res.json()
 }
-
 
 export async function getProperty(id: string) {
   const res = await fetch(

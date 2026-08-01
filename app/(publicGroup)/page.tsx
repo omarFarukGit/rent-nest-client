@@ -8,6 +8,7 @@ import Testimonials from "@/components/modules/home/Testimonials"
 import WhyRentNest from "@/components/modules/home/WhyRentNest"
 
 export default function HomePage() {
+  
   return (
     <>
       <HeroSection />

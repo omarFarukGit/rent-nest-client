@@ -1,154 +1,22 @@
 "use client"
 
-import { Search, SlidersHorizontal } from "lucide-react"
-
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-
 import PropertyCard from "./PropertyCard"
+
 import { TPropertiesResponse } from "@/types/PropertyType"
 
-// const properties = [
-//   {
-//     id: "9d6c5285-1df9-4291-9bce-3dd2a916fd0b",
+import PropertyFilter from "./PropertyFilter"
+import PropertyCategory from "./PropertyCategory"
+import { TCategoriesResponse } from "@/types/CategoryType"
+import { PropertySearch } from "./PropertySearch"
 
-//     title: "Prime Residential Plot",
-
-//     description:
-//       "Prime residential plot with road access and utility connections.",
-
-//     images: ["https://example.com/images/land1.jpg"],
-
-//     price: "3500000",
-
-//     location: "Purbachal, Dhaka",
-
-//     bedrooms: 0,
-
-//     bathrooms: 0,
-
-//     size: "2160",
-
-//     amenities: ["Road Access", "Electricity", "Water Supply", "Gas Connection"],
-
-//     availability: "RENTED",
-
-//     category: {
-//       id: "1",
-//       name: "Lands",
-//     },
-
-//     averageRating: 5,
-
-//     reviewCount: 1,
-//   },
-//   {
-//     id: "9d6c5285-1df9-4291-9bce-3dd2a916fd0b",
-
-//     title: "Prime Residential Plot",
-
-//     description:
-//       "Prime residential plot with road access and utility connections.",
-
-//     images: ["https://example.com/images/land1.jpg"],
-
-//     price: "3500000",
-
-//     location: "Purbachal, Dhaka",
-
-//     bedrooms: 0,
-
-//     bathrooms: 0,
-
-//     size: "2160",
-
-//     amenities: ["Road Access", "Electricity", "Water Supply", "Gas Connection"],
-
-//     availability: "RENTED",
-
-//     category: {
-//       id: "1",
-//       name: "Lands",
-//     },
-
-//     averageRating: 5,
-
-//     reviewCount: 1,
-//   },
-//   {
-//     id: "9d6c5285-1df9-4291-9bce-3dd2a916fd0b",
-
-//     title: "Prime Residential Plot",
-
-//     description:
-//       "Prime residential plot with road access and utility connections.",
-
-//     images: ["https://example.com/images/land1.jpg"],
-
-//     price: "3500000",
-
-//     location: "Purbachal, Dhaka",
-
-//     bedrooms: 0,
-
-//     bathrooms: 0,
-
-//     size: "2160",
-
-//     amenities: ["Road Access", "Electricity", "Water Supply", "Gas Connection"],
-
-//     availability: "RENTED",
-
-//     category: {
-//       id: "1",
-//       name: "Lands",
-//     },
-
-//     averageRating: 5,
-
-//     reviewCount: 1,
-//   },
-
-//   {
-//     id: "2",
-
-//     title: "Modern Family Apartment",
-
-//     description: "Beautiful apartment with modern facilities.",
-
-//     images: ["https://example.com/images/home.jpg"],
-
-//     price: "45000",
-
-//     location: "Dhanmondi, Dhaka",
-
-//     bedrooms: 3,
-
-//     bathrooms: 2,
-
-//     size: "1500",
-
-//     amenities: ["Parking", "Lift", "Security"],
-
-//     availability: "AVAILABLE",
-
-//     category: {
-//       id: "2",
-//       name: "Apartment",
-//     },
-
-//     averageRating: 4.8,
-
-//     reviewCount: 20,
-//   },
-// ]
 type Props = {
   properties: TPropertiesResponse
+  categories: TCategoriesResponse
 }
 
-export default function PropertyPage({ properties }: Props) {
+export default function PropertyPage({ properties, categories }: Props) {
   return (
-    <div className="mx-auto max-w-7xl space-y-8">
+    <div className="mx-auto max-w-7xl space-y-8 px-4 pt-10">
       {/* Header */}
 
       <div>
@@ -159,50 +27,24 @@ export default function PropertyPage({ properties }: Props) {
         </p>
       </div>
 
-      {/* Search & Filter */}
-
-      <div className="flex flex-col gap-4 md:flex-row">
-        <div className="relative flex-1">
-          <Search className="absolute top-3 left-3 h-5 w-5 text-muted-foreground" />
-
-          <Input
-            placeholder="Search by location or property name..."
-            className="pl-10"
-          />
-        </div>
-
-        <Button variant="outline">
-          <SlidersHorizontal className="mr-2 h-4 w-4" />
-          Filters
-        </Button>
+      <div className="grid grid-cols-1 justify-between gap-2 sm:grid-cols-3">
+        {/* Category */}
+        <PropertyCategory categories={categories} />
+        {/* Search */}
+        <div></div>
+        <PropertySearch />
       </div>
+      {/* Filter */}
 
-      {/* Category */}
+      <PropertyFilter />
+      {/* Count */}
 
-      <div className="flex flex-wrap gap-3">
-        {["All", "Apartment", "House", "Villa", "Office", "Land"].map(
-          (item) => (
-            <Button
-              key={item}
-              variant={item === "All" ? "default" : "outline"}
-              size="sm"
-            >
-              {item}
-            </Button>
-          )
-        )}
-      </div>
-
-      {/* Property Count */}
-
-      <div>
-        <h2 className="text-xl font-semibold">
-          Available Properties
-          <span className="ml-2 text-muted-foreground">
-            ({properties.data.length})
-          </span>
-        </h2>
-      </div>
+      <h2 className="text-xl font-semibold">
+        Available Properties
+        <span className="ml-2 text-muted-foreground">
+          ({properties.data.length})
+        </span>
+      </h2>
 
       {/* Grid */}
 
@@ -211,8 +53,6 @@ export default function PropertyPage({ properties }: Props) {
           <PropertyCard key={property.id} property={property} />
         ))}
       </div>
-
-      {/* Empty State */}
 
       {properties.data.length === 0 && (
         <div className="rounded-xl border p-10 text-center">
