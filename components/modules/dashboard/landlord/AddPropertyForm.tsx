@@ -8,6 +8,7 @@ import { useActionState, useEffect, useState } from "react"
 import { toast } from "sonner"
 import Image from "next/image"
 import { uploadImageToImgBB } from "@/utils/uploadImage"
+import { useRouter } from "next/navigation"
 
 const amenitiesList = [
   "WiFi",
@@ -31,12 +32,14 @@ export default function AddPropertyForm() {
 
   const [images, setImages] = useState<File[]>([])
   const [preview, setPreview] = useState<string[]>([])
+  const router = useRouter()
 
   useEffect(() => {
     if (!state.message) return
 
     if (state.success) {
       toast.success(state.message)
+      router.push("/landlord-dashboard/properties")
     } else {
       toast.error(state.message)
     }

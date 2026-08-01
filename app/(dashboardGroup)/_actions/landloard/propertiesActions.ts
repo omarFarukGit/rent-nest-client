@@ -2,6 +2,7 @@
 "use server"
 import { revalidateTag } from "next/cache"
 import { cookies } from "next/headers"
+import { redirect } from "next/navigation"
 
 export const getMyProperties = async () => {
   const cookieStore = await cookies()
@@ -63,4 +64,74 @@ export async function createProperty(prevState: any, formData: FormData) {
     revalidateTag("my-properties", { expire: 0 })
   }
   return await result
+}
+
+type State = {
+  success: boolean
+  message: string
+}
+
+export async function updateProperty(
+  propertyId: string,
+  prevState: State,
+  formData: FormData
+): Promise<State> {
+  try {
+    const cookieStore = await cookies()
+
+    const accessToken = cookieStore.get("accessToken")?.value
+
+    const payload = {
+      title: formData.get("title"),
+      description: formData.get("description"),
+      images: formData.getAll("images"),
+      price: Number(formData.get("price")),
+      location: formData.get("location"),
+      categoryName: formData.get("categoryName"),
+      bedrooms: Number(formData.get("bedrooms")),
+      bathrooms: Number(formData.get("bathrooms")),
+      size: Number(formData.get("size")),
+      amenities: formData.getAll("amenities"),
+      availability: formData.get("availability"),
+    }
+
+    const res = await fetch(
+      `${process.env.BACKEND_URL}/api/properties/${propertyId}`,
+      {
+        method: "PATCH",
+
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+
+        body: JSON.stringify(payload),
+      }
+    )
+
+    const result = await res.json()
+
+    if (!res.ok) {
+      return {
+        success: false,
+        message: result.message || "Update failed",
+      }
+    }
+
+    if (result.success) {
+      revalidateTag("properties", { expire: 0 })
+      revalidateTag("my-properties", { expire: 0 })
+      
+    }
+
+    return {
+      success: true,
+      message: "Property updated successfully",
+    }
+  } catch (error) {
+    return {
+      success: false,
+      message: "Something went wrong",
+    }
+  }
 }
