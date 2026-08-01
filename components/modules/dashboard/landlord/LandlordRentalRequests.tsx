@@ -1,45 +1,21 @@
-"use client";
+"use client"
 
-import { Check, Eye, Search, X } from "lucide-react";
+import { Check, Eye, Search, X } from "lucide-react"
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { IRentalRequestResponse } from "@/types/RentalType"
 
-const requests = [
-  {
-    id: 1,
-    tenant: "Ahmed Rahman",
-    email: "ahmed@gmail.com",
-    property: "Modern Apartment",
-    date: "30 Jul 2026",
-    status: "PENDING",
-  },
-  {
-    id: 2,
-    tenant: "Sarah Khan",
-    email: "sarah@gmail.com",
-    property: "Luxury Villa",
-    date: "28 Jul 2026",
-    status: "APPROVED",
-  },
-  {
-    id: 3,
-    tenant: "Hasan Ali",
-    email: "hasan@gmail.com",
-    property: "Office Space",
-    date: "25 Jul 2026",
-    status: "REJECTED",
-  },
-];
+type Props = {
+  requests: IRentalRequestResponse
+}
 
-export default function LandlordRentalRequests() {
+export default function LandlordRentalRequests({ requests }: Props) {
   return (
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold">
-          Rental Requests
-        </h1>
+        <h1 className="text-3xl font-bold">Rental Requests</h1>
 
         <p className="mt-2 text-muted-foreground">
           Review and manage requests from tenants.
@@ -49,17 +25,12 @@ export default function LandlordRentalRequests() {
       {/* Search */}
       <div className="flex flex-col gap-4 md:flex-row">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute top-3 left-3 h-4 w-4 text-muted-foreground" />
 
-          <Input
-            placeholder="Search requests..."
-            className="pl-10"
-          />
+          <Input placeholder="Search requests..." className="pl-10" />
         </div>
 
-        <Button variant="outline">
-          Filter Status
-        </Button>
+        <Button variant="outline">Filter Status</Button>
       </div>
 
       {/* Table */}
@@ -68,50 +39,38 @@ export default function LandlordRentalRequests() {
           <table className="w-full">
             <thead className="bg-muted/50">
               <tr>
-                <th className="p-4 text-left">
-                  Tenant
-                </th>
+                <th className="p-4 text-left">Tenant</th>
 
-                <th className="p-4 text-left">
-                  Property
-                </th>
+                <th className="p-4 text-left">Property</th>
 
-                <th className="p-4 text-left">
-                  Requested On
-                </th>
+                <th className="p-4 text-left">Requested On</th>
 
-                <th className="p-4 text-left">
-                  Status
-                </th>
+                <th className="p-4 text-left">Status</th>
 
-                <th className="p-4 text-right">
-                  Actions
-                </th>
+                <th className="p-4 text-right">Actions</th>
               </tr>
             </thead>
 
             <tbody>
-              {requests.map((request) => (
-                <tr
-                  key={request.id}
-                  className="border-t"
-                >
+              {requests.data.map((request) => (
+                <tr key={request.id} className="border-t">
                   <td className="p-4">
-                    <h3 className="font-medium">
-                      {request.tenant}
-                    </h3>
+                    <h3 className="font-medium">{request.tenant.name}</h3>
 
                     <p className="text-sm text-muted-foreground">
-                      {request.email}
+                      {request.tenant.email}
                     </p>
                   </td>
 
-                  <td className="p-4">
-                    {request.property}
-                  </td>
+                  <td className="p-4">{request.property.title}</td>
 
                   <td className="p-4">
-                    {request.date}
+                    {" "}
+                    {new Date(request.createdAt).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
                   </td>
 
                   <td className="p-4">
@@ -120,8 +79,8 @@ export default function LandlordRentalRequests() {
                         request.status === "APPROVED"
                           ? "bg-green-100 text-green-700"
                           : request.status === "REJECTED"
-                          ? "bg-red-100 text-red-700"
-                          : "bg-yellow-100 text-yellow-700"
+                            ? "bg-red-100 text-red-700"
+                            : "bg-yellow-100 text-yellow-700"
                       }`}
                     >
                       {request.status}
@@ -130,26 +89,17 @@ export default function LandlordRentalRequests() {
 
                   <td className="p-4">
                     <div className="flex justify-end gap-2">
-                      <Button
-                        size="icon"
-                        variant="outline"
-                      >
+                      <Button size="icon" variant="outline">
                         <Eye className="h-4 w-4" />
                       </Button>
 
                       {request.status === "PENDING" && (
                         <>
-                          <Button
-                            size="icon"
-                            variant="default"
-                          >
+                          <Button size="icon" variant="default">
                             <Check className="h-4 w-4" />
                           </Button>
 
-                          <Button
-                            size="icon"
-                            variant="destructive"
-                          >
+                          <Button size="icon" variant="destructive">
                             <X className="h-4 w-4" />
                           </Button>
                         </>
@@ -161,7 +111,7 @@ export default function LandlordRentalRequests() {
             </tbody>
           </table>
 
-          {requests.length === 0 && (
+          {requests.data.length === 0 && (
             <div className="py-16 text-center text-muted-foreground">
               No rental requests found.
             </div>
@@ -169,5 +119,5 @@ export default function LandlordRentalRequests() {
         </div>
       </div>
     </div>
-  );
+  )
 }
