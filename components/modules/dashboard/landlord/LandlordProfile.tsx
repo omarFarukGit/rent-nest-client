@@ -1,27 +1,29 @@
-"use client";
+"use client"
 
 import {
   Building2,
   Mail,
   MapPin,
   Phone,
- User,
+  User,
   Edit,
   Lock,
   Home,
   Users,
-} from "lucide-react";
+} from "lucide-react"
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
+import { TUser } from "@/types/UserType"
 
-export default function LandlordProfile() {
+type Props = {
+  user: TUser
+}
+export default function LandlordProfile({ user }: Props) {
   return (
     <div className="space-y-6">
       {/* Heading */}
       <div>
-        <h1 className="text-3xl font-bold">
-          My Profile
-        </h1>
+        <h1 className="text-3xl font-bold">My Profile</h1>
 
         <p className="mt-2 text-muted-foreground">
           View and manage your landlord profile.
@@ -36,33 +38,33 @@ export default function LandlordProfile() {
           </div>
 
           <div className="flex-1">
-            <h2 className="text-2xl font-bold">
-              John Doe
-            </h2>
+            <h2 className="text-2xl font-bold">{user?.name}</h2>
 
-            <p className="text-muted-foreground">
-              Landlord
-            </p>
+            <p className="text-muted-foreground">{user?.role}</p>
 
             <div className="mt-5 grid gap-4 sm:grid-cols-2">
               <div className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-primary" />
-                john@example.com
+                {user.email}
               </div>
 
               <div className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-primary" />
-                +8801700000000
+                {user.phone ?? "+8801700000000"}
               </div>
 
               <div className="flex items-center gap-2">
                 <MapPin className="h-4 w-4 text-primary" />
-                Dhaka, Bangladesh
+                {user.address ?? "Dhaka, Bangladesh"}
               </div>
 
               <div className="flex items-center gap-2">
                 <Building2 className="h-4 w-4 text-primary" />
-                Member since 2025
+                {new Date(user.createdAt).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
               </div>
             </div>
           </div>
@@ -86,13 +88,9 @@ export default function LandlordProfile() {
         <div className="rounded-xl border bg-card p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">
-                Total Properties
-              </p>
+              <p className="text-sm text-muted-foreground">Total Properties</p>
 
-              <h2 className="mt-2 text-3xl font-bold">
-                18
-              </h2>
+              <h2 className="mt-2 text-3xl font-bold">18</h2>
             </div>
 
             <Building2 className="h-10 w-10 text-primary" />
@@ -102,13 +100,9 @@ export default function LandlordProfile() {
         <div className="rounded-xl border bg-card p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">
-                Active Rentals
-              </p>
+              <p className="text-sm text-muted-foreground">Active Rentals</p>
 
-              <h2 className="mt-2 text-3xl font-bold">
-                12
-              </h2>
+              <h2 className="mt-2 text-3xl font-bold">12</h2>
             </div>
 
             <Home className="h-10 w-10 text-green-600" />
@@ -118,13 +112,9 @@ export default function LandlordProfile() {
         <div className="rounded-xl border bg-card p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-muted-foreground">
-                Total Tenants
-              </p>
+              <p className="text-sm text-muted-foreground">Total Tenants</p>
 
-              <h2 className="mt-2 text-3xl font-bold">
-                24
-              </h2>
+              <h2 className="mt-2 text-3xl font-bold">24</h2>
             </div>
 
             <Users className="h-10 w-10 text-blue-600" />
@@ -134,9 +124,7 @@ export default function LandlordProfile() {
 
       {/* About */}
       <div className="rounded-xl border bg-card p-6">
-        <h2 className="text-xl font-semibold">
-          About
-        </h2>
+        <h2 className="text-xl font-semibold">About</h2>
 
         <p className="mt-4 leading-7 text-muted-foreground">
           I am an experienced landlord managing residential and commercial
@@ -146,5 +134,5 @@ export default function LandlordProfile() {
         </p>
       </div>
     </div>
-  );
+  )
 }
