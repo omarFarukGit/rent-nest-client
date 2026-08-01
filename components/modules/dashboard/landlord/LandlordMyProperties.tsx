@@ -1,53 +1,23 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import {
-  Plus,
-  Search,
-  Eye,
-  Pencil,
-  Trash2,
-} from "lucide-react";
+import Link from "next/link"
+import { Plus, Search, Eye, Pencil, Trash2 } from "lucide-react"
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { TPropertiesResponse } from "@/types/PropertyType"
 
-const properties = [
-  {
-    id: "1",
-    title: "Modern Family Apartment",
-    location: "Dhanmondi, Dhaka",
-    type: "Apartment",
-    rent: 25000,
-    status: "AVAILABLE",
-  },
-  {
-    id: "2",
-    title: "Luxury Villa",
-    location: "Uttara, Dhaka",
-    type: "Villa",
-    rent: 50000,
-    status: "RENTED",
-  },
-  {
-    id: "3",
-    title: "Office Space",
-    location: "Gulshan, Dhaka",
-    type: "Office",
-    rent: 70000,
-    status: "PENDING",
-  },
-];
+type Props = {
+  properties: TPropertiesResponse
+}
 
-export default function LandlordMyProperties() {
+export default function LandlordMyProperties({ properties }: Props) {
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
         <div>
-          <h1 className="text-3xl font-bold">
-            My Properties
-          </h1>
+          <h1 className="text-3xl font-bold">My Properties</h1>
 
           <p className="mt-2 text-muted-foreground">
             Manage all your rental properties.
@@ -65,17 +35,12 @@ export default function LandlordMyProperties() {
       {/* Search */}
       <div className="flex flex-col gap-4 md:flex-row">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute top-3 left-3 h-4 w-4 text-muted-foreground" />
 
-          <Input
-            placeholder="Search properties..."
-            className="pl-10"
-          />
+          <Input placeholder="Search properties..." className="pl-10" />
         </div>
 
-        <Button variant="outline">
-          Filter Status
-        </Button>
+        <Button variant="outline">Filter Status</Button>
       </div>
 
       {/* Table */}
@@ -93,63 +58,45 @@ export default function LandlordMyProperties() {
             </thead>
 
             <tbody>
-              {properties.map((property) => (
-                <tr
-                  key={property.id}
-                  className="border-t"
-                >
+              {properties.data.map((property) => (
+                <tr key={property.id} className="border-t">
                   <td className="p-4">
-                    <h3 className="font-medium">
-                      {property.title}
-                    </h3>
+                    <h3 className="font-medium">{property.title}</h3>
 
                     <p className="text-sm text-muted-foreground">
                       {property.location}
                     </p>
                   </td>
 
-                  <td className="p-4">
-                    {property.type}
-                  </td>
+                  <td className="p-4">{property.category.name}</td>
 
-                  <td className="p-4">
-                    ${property.rent}/month
-                  </td>
+                  <td className="p-4">${property.price}/month</td>
 
                   <td className="p-4">
                     <span
                       className={`rounded-full px-3 py-1 text-xs font-medium ${
-                        property.status === "AVAILABLE"
+                        property.availability === "AVAILABLE"
                           ? "bg-green-100 text-green-700"
-                          : property.status === "RENTED"
-                          ? "bg-blue-100 text-blue-700"
-                          : "bg-yellow-100 text-yellow-700"
+                          : property.availability === "RENTED"
+                            ? "bg-blue-100 text-blue-700"
+                            : "bg-yellow-100 text-yellow-700"
                       }`}
                     >
-                      {property.status}
+                      {property.availability}
                     </span>
                   </td>
 
                   <td className="p-4">
                     <div className="flex justify-end gap-2">
-                      <Button
-                        size="icon"
-                        variant="outline"
-                      >
+                      <Button size="icon" variant="outline">
                         <Eye className="h-4 w-4" />
                       </Button>
 
-                      <Button
-                        size="icon"
-                        variant="outline"
-                      >
+                      <Button size="icon" variant="outline">
                         <Pencil className="h-4 w-4" />
                       </Button>
 
-                      <Button
-                        size="icon"
-                        variant="destructive"
-                      >
+                      <Button size="icon" variant="destructive">
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
@@ -159,7 +106,7 @@ export default function LandlordMyProperties() {
             </tbody>
           </table>
 
-          {properties.length === 0 && (
+          {properties.data.length === 0 && (
             <div className="py-16 text-center text-muted-foreground">
               No properties found.
             </div>
@@ -167,5 +114,5 @@ export default function LandlordMyProperties() {
         </div>
       </div>
     </div>
-  );
+  )
 }
