@@ -8,6 +8,7 @@ import PropertyFilter from "./PropertyFilter"
 import PropertyCategory from "./PropertyCategory"
 import { TCategoriesResponse } from "@/types/CategoryType"
 import { PropertySearch } from "./PropertySearch"
+import Pagination from "@/components/shared/Pagination"
 
 type Props = {
   properties: TPropertiesResponse
@@ -16,7 +17,7 @@ type Props = {
 
 export default function PropertyPage({ properties, categories }: Props) {
   return (
-    <div className="mx-auto max-w-7xl space-y-8 px-4 pt-10">
+    <div className="mx-auto max-w-7xl space-y-8 px-4 py-10">
       {/* Header */}
 
       <div>
@@ -63,6 +64,11 @@ export default function PropertyPage({ properties, categories }: Props) {
           </p>
         </div>
       )}
+
+      <Pagination
+        page={properties.meta.page}
+        totalPages={properties.meta.totalPages}
+      />
     </div>
   )
 }

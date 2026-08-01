@@ -18,5 +18,8 @@ export default async function PropertiesPage({
   const properties = await getAllProperties(query);
   const categories: TCategoriesResponse = await getAllCategory()
 
-  return <PropertyPage properties={properties} categories={categories} />
+  return <div>
+    <PropertyPage properties={properties} categories={categories} />
+
+  </div>
 }
