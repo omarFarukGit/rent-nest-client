@@ -4,10 +4,8 @@ import { createProperty } from "@/app/(dashboardGroup)/_actions/landloard/proper
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { useActionState, useEffect, useState } from "react"
+import { useActionState, useEffect } from "react"
 import { toast } from "sonner"
-import Image from "next/image"
-import { uploadImageToImgBB } from "@/utils/uploadImage"
 import { useRouter } from "next/navigation"
 
 const amenitiesList = [
@@ -28,61 +26,26 @@ const initialState = {
 }
 
 export default function AddPropertyForm() {
-  const [state, action, pending] = useActionState(createProperty, initialState)
-
-  const [images, setImages] = useState<File[]>([])
-  const [preview, setPreview] = useState<string[]>([])
   const router = useRouter()
+
+  const [state, action, pending] = useActionState(createProperty, initialState)
 
   useEffect(() => {
     if (!state.message) return
 
     if (state.success) {
       toast.success(state.message)
-      router.push("/landlord-dashboard/properties")
+
+      router.replace("/landlord-dashboard/properties")
     } else {
       toast.error(state.message)
     }
-  }, [state])
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || [])
-
-    setImages(files)
-
-    const urls = files.map((file) => URL.createObjectURL(file))
-
-    setPreview(urls)
-  }
-
-  const handleSubmit = async (formData: FormData) => {
-    try {
-      // Upload images to ImgBB
-
-      const imageUrls = await Promise.all(
-        images.map((file) => uploadImageToImgBB(file))
-      )
-
-      // remove File objects
-
-      formData.delete("images")
-
-      // Add image URLs
-
-      imageUrls.forEach((url) => {
-        formData.append("images", url)
-      })
-
-      // Call Server Action
-
-      await action(formData)
-    } catch (error) {
-      toast.error("Image upload failed")
-    }
-  }
+  }, [state, router])
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
+      {/* Header */}
+
       <div>
         <h1 className="text-3xl font-bold">Add New Property</h1>
 
@@ -91,7 +54,7 @@ export default function AddPropertyForm() {
         </p>
       </div>
 
-      <form action={handleSubmit} className="space-y-6">
+      <form action={action} className="space-y-6">
         {/* Basic Information */}
 
         <div className="rounded-xl border bg-card p-6">
@@ -116,6 +79,8 @@ export default function AddPropertyForm() {
                 <option value="Villa">Villa</option>
 
                 <option value="Office">Office</option>
+
+                <option value="Land">Land</option>
               </select>
             </div>
 
@@ -161,7 +126,7 @@ export default function AddPropertyForm() {
             <div>
               <label>Location</label>
 
-              <Input name="location" placeholder="Banani Dhaka" />
+              <Input name="location" placeholder="Banani, Dhaka" />
             </div>
           </div>
         </div>
@@ -183,9 +148,9 @@ export default function AddPropertyForm() {
         <div className="rounded-xl border p-6">
           <h2 className="mb-4 text-xl font-semibold">Amenities</h2>
 
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {amenitiesList.map((item) => (
-              <label key={item} className="flex gap-2">
+              <label key={item} className="flex items-center gap-2">
                 <input type="checkbox" name="amenities" value={item} />
 
                 {item}
@@ -199,30 +164,14 @@ export default function AddPropertyForm() {
         <div className="rounded-xl border p-6">
           <h2 className="mb-4 text-xl font-semibold">Property Images</h2>
 
-          <Input
-            type="file"
-            multiple
-            accept="image/*"
-            onChange={handleImageChange}
-          />
-
-          <div className="mt-4 flex flex-wrap gap-4">
-            {preview.map((src, index) => (
-              <Image
-                key={index}
-                src={src}
-                width={120}
-                height={120}
-                alt="preview"
-                className="rounded-lg object-cover"
-              />
-            ))}
-          </div>
+          <Input name="images" type="file" multiple accept="image/*" />
         </div>
 
-        <Button type="submit" disabled={pending}>
-          {pending ? "Publishing..." : "Publish Property"}
-        </Button>
+        <div className="flex justify-end">
+          <Button type="submit" disabled={pending}>
+            {pending ? "Publishing..." : "Publish Property"}
+          </Button>
+        </div>
       </form>
     </div>
   )

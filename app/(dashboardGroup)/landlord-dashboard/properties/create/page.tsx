@@ -4,4 +4,5 @@ import AddPropertyForm from "@/components/modules/dashboard/landlord/AddProperty
 
 export default function AddPropertyPage() {
   return <AddPropertyForm />
+  
 }

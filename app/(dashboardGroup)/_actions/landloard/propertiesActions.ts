@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server"
+import { uploadImageToImgBB } from "@/utils/uploadImage"
 import { revalidateTag } from "next/cache"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
@@ -33,6 +34,16 @@ export async function createProperty(prevState: any, formData: FormData) {
   const cookieStore = await cookies()
   const accessToken = cookieStore.get("accessToken")?.value as string
 
+  const files = formData.getAll("images") as File[]
+
+  // Upload Images to ImgBB
+
+  const imageUrls = await Promise.all(
+    files
+      .filter((file) => file.size > 0)
+      .map((file) => uploadImageToImgBB(file))
+  )
+
   const payload = {
     title: formData.get("title"),
     description: formData.get("description"),
@@ -44,7 +55,7 @@ export async function createProperty(prevState: any, formData: FormData) {
     size: Number(formData.get("size")),
     availability: formData.get("availability"),
     amenities: formData.getAll("amenities"),
-    images: formData.getAll("images"),
+    images: imageUrls,
   }
 
   const res = await fetch(`${process.env.BACKEND_URL}/api/properties`, {
@@ -121,7 +132,6 @@ export async function updateProperty(
     if (result.success) {
       revalidateTag("properties", { expire: 0 })
       revalidateTag("my-properties", { expire: 0 })
-      
     }
 
     return {
