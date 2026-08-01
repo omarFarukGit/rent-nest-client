@@ -5,12 +5,40 @@ import { Check, Eye, Search, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { IRentalRequestResponse } from "@/types/RentalType"
+import { useTransition } from "react"
+import { toast } from "sonner"
+import { updateRentalRequestLandload } from "@/app/(dashboardGroup)/_actions/landloard/rentalActions"
+import Link from "next/link"
 
 type Props = {
   requests: IRentalRequestResponse
 }
 
 export default function LandlordRentalRequests({ requests }: Props) {
+  const [isPending, startTransition] = useTransition()
+
+  const handleUpdateRequest = (
+    requestId: string,
+    status: "APPROVED" | "REJECTED"
+  ) => {
+    startTransition(async () => {
+      try {
+        const res = await updateRentalRequestLandload(requestId, status)
+
+        if (res.success) {
+          toast.success(
+            status === "APPROVED"
+              ? "Rental request approved successfully."
+              : "Rental request rejected successfully."
+          )
+        } else {
+          toast.error(res.message || "Failed to update rental request.")
+        }
+      } catch (error) {
+        toast.error("Something went wrong. Please try again.")
+      }
+    })
+  }
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -87,19 +115,38 @@ export default function LandlordRentalRequests({ requests }: Props) {
                     </span>
                   </td>
 
+                  {/* Actions */}
                   <td className="p-4">
-                    <div className="flex justify-end gap-2">
+                    <div className="flex gap-2">
                       <Button size="icon" variant="outline">
-                        <Eye className="h-4 w-4" />
+                        <Link href={`/properties/${request.property.id}`}>
+                          <Eye className="h-4 w-4" />
+                        </Link>
                       </Button>
 
                       {request.status === "PENDING" && (
                         <>
-                          <Button size="icon" variant="default">
+                          <Button
+                            size="icon"
+                            variant="outline"
+                            className="text-green-600"
+                            disabled={isPending}
+                            onClick={() =>
+                              handleUpdateRequest(request.id, "APPROVED")
+                            }
+                          >
                             <Check className="h-4 w-4" />
                           </Button>
 
-                          <Button size="icon" variant="destructive">
+                          <Button
+                            size="icon"
+                            variant="outline"
+                            className="text-red-600"
+                            disabled={isPending}
+                            onClick={() =>
+                              handleUpdateRequest(request.id, "REJECTED")
+                            }
+                          >
                             <X className="h-4 w-4" />
                           </Button>
                         </>
