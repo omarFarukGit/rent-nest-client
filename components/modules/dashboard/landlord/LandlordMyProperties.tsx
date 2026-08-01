@@ -93,7 +93,11 @@ export default function LandlordMyProperties({ properties }: Props) {
                       </Button>
 
                       <Button size="icon" variant="outline">
-                        <Pencil className="h-4 w-4" />
+                        <Link
+                          href={`/landlord-dashboard/properties/${property.id}/edit`}
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </Link>
                       </Button>
 
                       <Button size="icon" variant="destructive">
