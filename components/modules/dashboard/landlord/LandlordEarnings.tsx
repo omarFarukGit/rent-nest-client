@@ -69,7 +69,8 @@ export default function LandlordEarnings() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
+
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-3xl font-bold">Earnings</h1>
 
@@ -78,7 +79,7 @@ export default function LandlordEarnings() {
           </p>
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row">
           <Button variant="outline">
             <Download className="mr-2 h-4 w-4" />
             Export
@@ -89,6 +90,7 @@ export default function LandlordEarnings() {
       </div>
 
       {/* Statistics */}
+
       <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
         {stats.map((item) => {
           const Icon = item.icon
@@ -111,13 +113,16 @@ export default function LandlordEarnings() {
         })}
       </div>
 
-      {/* Recent Payments */}
-      <div className="overflow-hidden rounded-xl border bg-card">
+      {/* Payments */}
+
+      <div className="rounded-xl border bg-card">
         <div className="border-b p-6">
           <h2 className="text-xl font-semibold">Recent Payments</h2>
         </div>
 
-        <div className="overflow-x-auto">
+        {/* Desktop Table */}
+
+        <div className="hidden overflow-x-auto md:block">
           <table className="w-full">
             <thead className="bg-muted/50">
               <tr>
@@ -145,34 +150,78 @@ export default function LandlordEarnings() {
                   <td className="p-4">{payment.date}</td>
 
                   <td className="p-4">
-                    <span
-                      className={`rounded-full px-3 py-1 text-xs font-medium ${
-                        payment.status === "PAID"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-yellow-100 text-yellow-700"
-                      }`}
-                    >
-                      {payment.status}
-                    </span>
+                    <Status status={payment.status} />
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-
-          {payments.length === 0 && (
-            <div className="py-16 text-center">
-              <ArrowDownLeft className="mx-auto mb-4 h-12 w-12 text-muted-foreground" />
-
-              <h3 className="text-xl font-semibold">No Payments Yet</h3>
-
-              <p className="mt-2 text-muted-foreground">
-                Payment history will appear here.
-              </p>
-            </div>
-          )}
         </div>
+
+        {/* Mobile Card */}
+
+        <div className="grid gap-4 p-4 md:hidden">
+          {payments.map((payment) => (
+            <div key={payment.id} className="space-y-3 rounded-lg border p-4">
+              <div className="flex justify-between">
+                <span className="font-medium">Tenant</span>
+
+                <span>{payment.tenant}</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Property</span>
+
+                <span>{payment.property}</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Amount</span>
+
+                <span className="font-semibold">{payment.amount}</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Date</span>
+
+                <span>{payment.date}</span>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <span>Status</span>
+
+                <Status status={payment.status} />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {payments.length === 0 && (
+          <div className="py-16 text-center">
+            <ArrowDownLeft className="mx-auto mb-4 h-12 w-12 text-muted-foreground" />
+
+            <h3 className="text-xl font-semibold">No Payments Yet</h3>
+
+            <p className="mt-2 text-muted-foreground">
+              Payment history will appear here.
+            </p>
+          </div>
+        )}
       </div>
     </div>
+  )
+}
+
+function Status({ status }: { status: string }) {
+  return (
+    <span
+      className={`rounded-full px-3 py-1 text-xs font-medium ${
+        status === "PAID"
+          ? "bg-green-100 text-green-700"
+          : "bg-yellow-100 text-yellow-700"
+      }`}
+    >
+      {status}
+    </span>
   )
 }
