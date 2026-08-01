@@ -145,3 +145,23 @@ export async function updateProperty(
     }
   }
 }
+
+export const deleteProperty = async (id: string, prevState: any) => {
+  const cookieStore = await cookies()
+  const accessToken = cookieStore.get("accessToken")?.value as string
+
+  const res = await fetch(`${process.env.BACKEND_URL}/api/properties/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: `accessToken=${accessToken}`,
+    },
+  })
+
+  const result = await res.json()
+  if (result.success) {
+    revalidateTag("properties", { expire: 0 })
+    revalidateTag("my-properties", { expire: 0 })
+  }
+  return result
+}

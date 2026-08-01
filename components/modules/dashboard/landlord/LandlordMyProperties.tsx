@@ -2,10 +2,13 @@
 
 import Link from "next/link"
 import { Plus, Search, Eye, Pencil, Trash2 } from "lucide-react"
+import { useActionState, useEffect } from "react"
+import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { TPropertiesResponse } from "@/types/PropertyType"
+import { deleteProperty } from "@/app/(dashboardGroup)/_actions/landloard/propertiesActions"
 
 type Props = {
   properties: TPropertiesResponse
@@ -15,6 +18,7 @@ export default function LandlordMyProperties({ properties }: Props) {
   return (
     <div className="space-y-6">
       {/* Header */}
+
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-3xl font-bold">My Properties</h1>
@@ -78,7 +82,7 @@ export default function LandlordMyProperties({ properties }: Props) {
 
                   <td className="p-4">{property.category.name}</td>
 
-                  <td className="p-4">${property.price}/month</td>
+                  <td className="p-4">৳ {property.price}/month</td>
 
                   <td className="p-4">
                     <StatusBadge status={property.availability} />
@@ -119,7 +123,7 @@ export default function LandlordMyProperties({ properties }: Props) {
             <div className="flex justify-between text-sm">
               <span>Rent</span>
 
-              <span className="font-medium">${property.price}/month</span>
+              <span className="font-medium">৳ {property.price}/month</span>
             </div>
 
             <div className="flex items-center justify-between">
@@ -128,7 +132,7 @@ export default function LandlordMyProperties({ properties }: Props) {
               <StatusBadge status={property.availability} />
             </div>
 
-            <div className="flex justify-end gap-2 pt-2">
+            <div className="flex justify-end pt-2">
               <Actions id={property.id} />
             </div>
           </div>
@@ -161,11 +165,37 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 function Actions({ id }: { id: string }) {
+  const initialState = {
+    success: false,
+    message: "",
+  }
+
+  const [state, action, pending] = useActionState(
+    deleteProperty.bind(null, id),
+    initialState
+  )
+
+  useEffect(() => {
+    if (!state.message) return
+
+    if (state.success) {
+      toast.success("property deleted successfully")
+    } else {
+      toast.error(state.message)
+    }
+  }, [state])
+
   return (
-    <>
+    <div className="flex gap-2">
+      {/* View */}
+
       <Button size="icon" variant="outline">
-        <Eye className="h-4 w-4" />
+        <Link href={`/properties/${id}`}>
+          <Eye className="h-4 w-4" />
+        </Link>
       </Button>
+
+      {/* Edit */}
 
       <Button size="icon" variant="outline" asChild>
         <Link href={`/landlord-dashboard/properties/${id}/edit`}>
@@ -173,9 +203,13 @@ function Actions({ id }: { id: string }) {
         </Link>
       </Button>
 
-      <Button size="icon" variant="destructive">
-        <Trash2 className="h-4 w-4" />
-      </Button>
-    </>
+      {/* Delete */}
+
+      <form action={action}>
+        <Button size="icon" variant="destructive" disabled={pending}>
+          <Trash2 className="h-4 w-4" />
+        </Button>
+      </form>
+    </div>
   )
 }
