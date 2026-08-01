@@ -35,33 +35,60 @@ export async function proxy(request: NextRequest) {
       )) as JwtPayload)
     : null
 
-  let userRole = null
-
+  // Delete invalid access token
   if (!decodedAccessToken?.success) {
     cookieStore.delete("accessToken")
-
-    // return NextResponse.redirect(new URL("/login", request.url))
   }
+
+  // Try to refresh access token BEFORE redirecting
+  if (!decodedAccessToken?.success && decodeRefreshToken?.success) {
+    const result = await getNewAccessToken()
+
+    if (result.success) {
+      const newAccessToken = result.data.accessToken
+
+      cookieStore.set("accessToken", newAccessToken, {
+        httpOnly: true,
+        sameSite: "lax",
+        secure: true,
+        maxAge: 60 * 60 * 24,
+      })
+
+      accessToken = newAccessToken
+
+      decodedAccessToken = accessToken
+        ? ((await jwtUtils.verifyToken(
+            accessToken,
+            process.env.JWT_ACCESS_SECRET as string
+          )) as JwtPayload)
+        : null
+    }
+  }
+
+  // Set role after refresh
+  let userRole = null
+
   if (decodedAccessToken?.success) {
     userRole = decodedAccessToken.data.role
   }
+
   const isPublic = PUBLIC_ROUTES.some(
     (route) => pathName === route || pathName.startsWith(route + "/")
   )
 
-  // authenticated pagess protections
+  // Redirect only if there is still no valid access token
   if (!accessToken && !isPublic) {
     const loginUrl = new URL("/login", request.url)
     loginUrl.searchParams.set("redirectTo", pathName)
     return NextResponse.redirect(loginUrl)
   }
 
-  // login user dont go login page and register page
+  // Login/Register protection
   if (accessToken && AUTH_ROUTES.includes(pathName)) {
     return NextResponse.redirect(new URL("/", request.url))
   }
 
-  // athorization
+  // Authorization
   if (pathName.startsWith("/dashboard") && userRole !== "TENANT") {
     return NextResponse.redirect(new URL("/", request.url))
   } else if (
@@ -73,33 +100,9 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url))
   }
 
-  // get new accessToken to refreshToken and set cookie new accessToken;
-  if (!decodedAccessToken?.success && decodeRefreshToken?.success) {
-    const result = await getNewAccessToken()
-
-    if (result.success) {
-      const newAccessToken = result.data.accessToken
-      cookieStore.set("accessToken", newAccessToken, {
-        httpOnly: true,
-        sameSite: "lax",
-        secure: true,
-        maxAge: 60 * 60 * 24,
-      })
-
-      accessToken = newAccessToken
-      decodedAccessToken = accessToken
-        ? jwtUtils.verifyToken(
-            accessToken,
-            process.env.JWT_ACCESS_SECRET as string
-          )
-        : null
-    }
-  }
   return NextResponse.next()
 }
 
 export const config = {
-  matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico|images|.*\\..*).*)",
-  ],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|images|.*\\..*).*)"],
 }
