@@ -55,11 +55,11 @@ type PropertyDetailsType = {
 }
 
 type Props = {
-  property: PropertyDetailsType,
-  userExits:boolean
+  property: PropertyDetailsType
+  userExits: boolean
 }
 
-export default function PropertyDetails({ property,userExits }: Props) {
+export default function PropertyDetails({ property, userExits }: Props) {
   return (
     <div className="space-y-10">
       {/* Image Gallery */}
@@ -75,7 +75,7 @@ export default function PropertyDetails({ property,userExits }: Props) {
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          {property.images.map((image,index) => (
+          {property.images.map((image, index) => (
             <div
               key={index}
               className="relative h-[190px] overflow-hidden rounded-xl"
@@ -120,7 +120,7 @@ export default function PropertyDetails({ property,userExits }: Props) {
             <p className="text-muted-foreground">Price</p>
 
             <h2 className="text-3xl font-bold text-primary">
-              ৳ {Number(property.price).toLocaleString()}
+              $ {Number(property.price).toLocaleString()}
             </h2>
           </div>
 

@@ -93,7 +93,7 @@ export default function PropertyCard({ property }: Props) {
 
         <div className="flex items-center justify-between">
           <h3 className="text-2xl font-bold text-primary">
-            ৳ {property.price.toLocaleString()}
+            $ {property.price.toLocaleString()}
           </h3>
 
           <span className="text-sm text-muted-foreground">/month</span>

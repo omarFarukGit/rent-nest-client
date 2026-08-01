@@ -50,7 +50,7 @@ export default function CategoriesSection({ categories }: Props) {
         </div>
 
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
-          {categories.data.slice(0, 5).map((category) => {
+          {categories.data.slice(1, 6).map((category) => {
             const Icon =
               categoryIcons[
                 category.name.toUpperCase() as keyof typeof categoryIcons
