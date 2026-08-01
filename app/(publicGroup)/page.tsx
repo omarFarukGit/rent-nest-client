@@ -6,13 +6,15 @@ import HowItWorks from "@/components/modules/home/HowItWorks"
 import TenantLandlordSection from "@/components/modules/home/TenantLandlordSection"
 import Testimonials from "@/components/modules/home/Testimonials"
 import WhyRentNest from "@/components/modules/home/WhyRentNest"
+import { getAllCategory } from "@/services/category"
+import { TCategoriesResponse } from "@/types/CategoryType"
 
-export default function HomePage() {
-  
+export default async function HomePage() {
+    const categories: TCategoriesResponse = await getAllCategory()
   return (
     <>
       <HeroSection />
-      <CategoriesSection />
+      <CategoriesSection categories={categories} />
       <HowItWorks />
       <WhyRentNest />
       <FeaturedProperties />
