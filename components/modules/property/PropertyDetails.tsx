@@ -55,10 +55,11 @@ type PropertyDetailsType = {
 }
 
 type Props = {
-  property: PropertyDetailsType
+  property: PropertyDetailsType,
+  userExits:boolean
 }
 
-export default function PropertyDetails({ property }: Props) {
+export default function PropertyDetails({ property,userExits }: Props) {
   return (
     <div className="space-y-10">
       {/* Image Gallery */}
@@ -213,6 +214,7 @@ export default function PropertyDetails({ property }: Props) {
             propertyLocation={property.location}
             propertyPrice={property.price}
             disabled={property.availability !== "AVAILABLE"}
+            userExits={userExits}
           />
         </div>
       </div>

@@ -50,6 +50,6 @@ export interface IPaginationMeta {
 export interface IUsersResponse {
   success: boolean
   message: string
-  meta: IPaginationMeta
+  meta?: IPaginationMeta
   data: IUser[]
 }

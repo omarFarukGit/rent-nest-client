@@ -70,7 +70,7 @@ export const createRentalRequest = async (
     endDate: formData.get("endDate") as string,
     message: formData.get("message") as string,
   }
-console.log(payload,'create')
+
 
 
 const res = await fetch(`${process.env.BACKEND_URL}/api/rentals`, {

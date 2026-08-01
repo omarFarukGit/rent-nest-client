@@ -1,6 +1,6 @@
 "use client"
 
-import { useActionState, useEffect, useState } from "react"
+import { startTransition, useActionState, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
@@ -18,6 +18,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 
 import { createRentalRequest } from "@/app/(dashboardGroup)/_actions/tenant/manageRentalActions"
+import Link from "next/link"
 
 type Props = {
   propertyId: string
@@ -25,6 +26,7 @@ type Props = {
   propertyLocation: string
   propertyPrice: string
   disabled?: boolean
+  userExits: boolean
 }
 
 const initialState = {
@@ -38,6 +40,7 @@ export default function RentalRequestModal({
   propertyLocation,
   propertyPrice,
   disabled,
+  userExits,
 }: Props) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
@@ -52,12 +55,25 @@ export default function RentalRequestModal({
 
     if (state.success) {
       toast.success(state.message)
-      setOpen(false)
-      router.refresh()
+
+      startTransition(() => {
+        setOpen(false)
+        router.refresh()
+      })
     } else {
       toast.error(state.message)
     }
   }, [state, router])
+
+  if (!userExits) {
+    return (
+      <Button asChild className="w-full" size="lg">
+        <Link href={`/login?redirectTo=/properties/${propertyId}`}>
+          Send Rental Request
+        </Link>
+      </Button>
+    )
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
