@@ -14,6 +14,7 @@ import {
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import RentalRequestModal from "../dashboard/tenant/RentalRequestModal"
 
 type PropertyDetailsType = {
   id: string
@@ -73,9 +74,9 @@ export default function PropertyDetails({ property }: Props) {
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          {property.images.map((image) => (
+          {property.images.map((image,index) => (
             <div
-              key={image}
+              key={index}
               className="relative h-[190px] overflow-hidden rounded-xl"
             >
               <Image src={image} alt="property" fill className="object-cover" />
@@ -206,9 +207,13 @@ export default function PropertyDetails({ property }: Props) {
             </div>
           </div>
 
-          <Button className="w-full" size="lg">
-            Send Rental Request
-          </Button>
+          <RentalRequestModal
+            propertyId={property.id}
+            propertyTitle={property.title}
+            propertyLocation={property.location}
+            propertyPrice={property.price}
+            disabled={property.availability !== "AVAILABLE"}
+          />
         </div>
       </div>
 

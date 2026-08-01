@@ -50,9 +50,37 @@ export const cancelRentalRequest = async (id: string) => {
         Cookie: `accessToken=${accessToken}`,
       },
       cache: "no-cache",
-      
     }
   )
+  const result = await res.json()
+
+  return result
+}
+
+export const createRentalRequest = async (
+  prevSate: any,
+  formData: FormData
+) => {
+  const cookieStore = await cookies()
+  const accessToken = cookieStore.get("accessToken")?.value as string
+
+  const payload = {
+    propertyId: formData.get("propertyId") as string,
+    startDate: formData.get("startDate") as string,
+    endDate: formData.get("endDate") as string,
+    message: formData.get("message") as string,
+  }
+console.log(payload,'create')
+
+
+const res = await fetch(`${process.env.BACKEND_URL}/api/rentals`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Cookie: `accessToken=${accessToken}`,
+  },
+  body: JSON.stringify(payload),
+})
   const result = await res.json()
 
   return result
