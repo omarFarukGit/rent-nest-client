@@ -1,68 +1,87 @@
-"use client";
+"use client"
 
-import { Search, Eye, Mail, Phone } from "lucide-react";
+import { Search, Eye, Mail, Phone } from "lucide-react"
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { IRentalRequestResponse } from "@/types/RentalType"
 
-const tenants = [
-  {
-    id: 1,
-    name: "Ahmed Rahman",
-    email: "ahmed@gmail.com",
-    phone: "+8801711111111",
-    property: "Modern Family Apartment",
-    rent: "$450",
-    status: "ACTIVE",
-  },
-  {
-    id: 2,
-    name: "Sarah Khan",
-    email: "sarah@gmail.com",
-    phone: "+8801722222222",
-    property: "Luxury Villa",
-    rent: "$850",
-    status: "ACTIVE",
-  },
-  {
-    id: 3,
-    name: "Hasan Ali",
-    email: "hasan@gmail.com",
-    phone: "+8801733333333",
-    property: "Office Space",
-    rent: "$650",
-    status: "ENDING SOON",
-  },
-];
+// const tenants = [
+//   {
+//     id: "1",
+//     tenant: {
+//       name: "Ahmed Rahman",
+//       email: "ahmed@gmail.com",
+//       phone: "+8801711111111",
+//     },
+//     property: {
+//       title: "Modern Family Apartment",
+//       price: 450,
+//     },
+//     startDate: "2026-08-01",
+//     endDate: "2027-07-31",
+//     status: "ACTIVE",
+//   },
+//   {
+//     id: "2",
+//     tenant: {
+//       name: "Sarah Khan",
+//       email: "sarah@gmail.com",
+//       phone: "+8801722222222",
+//     },
+//     property: {
+//       title: "Luxury Villa",
+//       price: 850,
+//     },
+//     startDate: "2026-06-15",
+//     endDate: "2027-06-14",
+//     status: "ACTIVE",
+//   },
+//   {
+//     id: "3",
+//     tenant: {
+//       name: "Hasan Ali",
+//       email: "hasan@gmail.com",
+//       phone: "+8801733333333",
+//     },
+//     property: {
+//       title: "Office Space",
+//       price: 650,
+//     },
+//     startDate: "2025-09-01",
+//     endDate: "2026-09-01",
+//     status: "ENDING_SOON",
+//   },
+// ]
 
-export default function MyTenants() {
+type Props = {
+  tenants: IRentalRequestResponse
+}
+
+export default function MyTenants({ tenants }: Props) {
   return (
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold">
-          My Tenants
-        </h1>
+        <h1 className="text-3xl font-bold">My Tenants</h1>
 
         <p className="mt-2 text-muted-foreground">
-          Manage all tenants currently renting your properties.
+          Manage tenants currently renting your properties.
         </p>
       </div>
 
       {/* Search */}
       <div className="flex flex-col gap-4 md:flex-row">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+          <Search className="absolute top-3 left-3 h-4 w-4 text-muted-foreground" />
 
           <Input
-            placeholder="Search tenants..."
+            placeholder="Search by tenant or property..."
             className="pl-10"
           />
         </div>
 
-        <Button variant="outline">
-          Filter
-        </Button>
+        <Button variant="outline">Filter</Button>
       </div>
 
       {/* Table */}
@@ -71,78 +90,64 @@ export default function MyTenants() {
           <table className="w-full">
             <thead className="bg-muted/50">
               <tr>
-                <th className="p-4 text-left">
-                  Tenant
-                </th>
-
-                <th className="p-4 text-left">
-                  Property
-                </th>
-
-                <th className="p-4 text-left">
-                  Monthly Rent
-                </th>
-
-                <th className="p-4 text-left">
-                  Status
-                </th>
-
-                <th className="p-4 text-right">
-                  Actions
-                </th>
+                <th className="p-4 text-left">Tenant</th>
+                <th className="p-4 text-left">Property</th>
+                <th className="p-4 text-left">Monthly Rent</th>
+                <th className="p-4 text-left">Start Date</th>
+                <th className="p-4 text-left">End Date</th>
+                <th className="p-4 text-left">Status</th>
+                <th className="p-4 text-right">Actions</th>
               </tr>
             </thead>
 
             <tbody>
-              {tenants.map((tenant) => (
-                <tr
-                  key={tenant.id}
-                  className="border-t"
-                >
+              {tenants.data.map((item) => (
+                <tr key={item.id} className="border-t hover:bg-muted/30">
                   <td className="p-4">
-                    <h3 className="font-medium">
-                      {tenant.name}
-                    </h3>
+                    <h3 className="font-medium">{item.tenant.name}</h3>
 
                     <div className="mt-2 space-y-1 text-sm text-muted-foreground">
                       <div className="flex items-center gap-2">
                         <Mail className="h-4 w-4" />
-                        {tenant.email}
+                        {item.tenant.email}
                       </div>
 
                       <div className="flex items-center gap-2">
                         <Phone className="h-4 w-4" />
-                        {tenant.phone}
+                        {item.tenant.phone}
                       </div>
                     </div>
                   </td>
 
-                  <td className="p-4">
-                    {tenant.property}
-                  </td>
+                  <td className="p-4">{item.property.title}</td>
 
                   <td className="p-4 font-medium">
-                    {tenant.rent}
+                    ৳ {item.property.price.toLocaleString()} / month
+                  </td>
+
+                  <td className="p-4">
+                    {new Date(item.startDate).toLocaleDateString()}
+                  </td>
+
+                  <td className="p-4">
+                    {new Date(item.endDate).toLocaleDateString()}
                   </td>
 
                   <td className="p-4">
                     <span
                       className={`rounded-full px-3 py-1 text-xs font-medium ${
-                        tenant.status === "ACTIVE"
+                        item.status === "APPROVED"
                           ? "bg-green-100 text-green-700"
                           : "bg-yellow-100 text-yellow-700"
                       }`}
                     >
-                      {tenant.status}
+                      {item.status === "APPROVED" ? "Ending Soon" : "Active"}
                     </span>
                   </td>
 
                   <td className="p-4">
                     <div className="flex justify-end">
-                      <Button
-                        variant="outline"
-                        size="icon"
-                      >
+                      <Button variant="outline" size="icon">
                         <Eye className="h-4 w-4" />
                       </Button>
                     </div>
@@ -152,7 +157,7 @@ export default function MyTenants() {
             </tbody>
           </table>
 
-          {tenants.length === 0 && (
+          {tenants.data.length === 0 && (
             <div className="py-16 text-center text-muted-foreground">
               No tenants found.
             </div>
@@ -160,5 +165,5 @@ export default function MyTenants() {
         </div>
       </div>
     </div>
-  );
+  )
 }
