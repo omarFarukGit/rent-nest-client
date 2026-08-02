@@ -12,6 +12,7 @@ type Props = {
 }
 
 export default function MyTenants({ tenants }: Props) {
+  const currency = process.env.NEXT_PUBLIC_CURRENCY
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -74,7 +75,7 @@ export default function MyTenants({ tenants }: Props) {
                   <td className="p-4">{item.property.title}</td>
 
                   <td className="p-4 font-medium">
-                    ৳ {item.property.price.toLocaleString()} / month
+                    {currency} {item.property.price.toLocaleString()} / month
                   </td>
 
                   <td className="p-4">
@@ -121,7 +122,7 @@ export default function MyTenants({ tenants }: Props) {
               <span>Rent</span>
 
               <span className="font-medium">
-                ৳ {item.property.price.toLocaleString()} / month
+                {currency} {item.property.price.toLocaleString()} / month
               </span>
             </div>
 

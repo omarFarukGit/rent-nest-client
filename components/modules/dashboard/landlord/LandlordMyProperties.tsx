@@ -9,12 +9,14 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { TPropertiesResponse } from "@/types/PropertyType"
 import { deleteProperty } from "@/app/(dashboardGroup)/_actions/landloard/propertiesActions"
+import Pagination from "@/components/shared/Pagination"
 
 type Props = {
   properties: TPropertiesResponse
 }
 
 export default function LandlordMyProperties({ properties }: Props) {
+  const currency = process.env.NEXT_PUBLIC_CURRENCY
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -82,7 +84,9 @@ export default function LandlordMyProperties({ properties }: Props) {
 
                   <td className="p-4">{property.category.name}</td>
 
-                  <td className="p-4">৳ {property.price}/month</td>
+                  <td className="p-4">
+                    {currency} {property.price}/month
+                  </td>
 
                   <td className="p-4">
                     <StatusBadge status={property.availability} />
@@ -123,7 +127,7 @@ export default function LandlordMyProperties({ properties }: Props) {
             <div className="flex justify-between text-sm">
               <span>Rent</span>
 
-              <span className="font-medium">৳ {property.price}/month</span>
+              <span className="font-medium">{currency} {property.price}/month</span>
             </div>
 
             <div className="flex items-center justify-between">
@@ -138,6 +142,11 @@ export default function LandlordMyProperties({ properties }: Props) {
           </div>
         ))}
       </div>
+
+      <Pagination
+        page={properties.meta.page}
+        totalPages={properties.meta.totalPages}
+      />
 
       {properties.data.length === 0 && (
         <div className="py-16 text-center text-muted-foreground">

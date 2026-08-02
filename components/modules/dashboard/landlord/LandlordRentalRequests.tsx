@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { IRentalRequestResponse } from "@/types/RentalType"
 import { updateRentalRequestLandload } from "@/app/(dashboardGroup)/_actions/landloard/rentalActions"
+import Pagination from "@/components/shared/Pagination"
 
 type Props = {
   requests: IRentalRequestResponse
@@ -163,6 +164,10 @@ export default function LandlordRentalRequests({ requests }: Props) {
           </div>
         ))}
       </div>
+      <Pagination
+        page={requests.meta.page}
+        totalPages={requests.meta.totalPages}
+      />
 
       {requests.data.length === 0 && (
         <div className="py-16 text-center text-muted-foreground">

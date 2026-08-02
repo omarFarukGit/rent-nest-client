@@ -44,6 +44,7 @@ export default function RentalRequestModal({
 }: Props) {
   const router = useRouter()
   const [open, setOpen] = useState(false)
+  const currency = process.env.NEXT_PUBLIC_CURRENCY
 
   const [state, formAction, isPending] = useActionState(
     createRentalRequest,
@@ -94,7 +95,7 @@ export default function RentalRequestModal({
           <p className="text-sm text-muted-foreground">{propertyLocation}</p>
 
           <p className="mt-2 font-semibold">
-            ৳ {Number(propertyPrice).toLocaleString()} / month
+            {currency} {Number(propertyPrice).toLocaleString()} / month
           </p>
         </div>
 
