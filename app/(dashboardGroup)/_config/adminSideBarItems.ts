@@ -42,11 +42,11 @@ export const ADMIN_SIDEBAR_ITEMS: ISidebarItem[] = [
     icon: Tags,
   },
 
-  {
-    label: "Reports",
-    href: "/admin-dashboard/reports",
-    icon: BarChart3,
-  },
+  // {
+  //   label: "Reports",
+  //   href: "/admin-dashboard/reports",
+  //   icon: BarChart3,
+  // },
 
   {
     label: "Profile",

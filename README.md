@@ -11,13 +11,9 @@ This project is a **Frontend Application** that consumes a backend API.
 
 ## 🚀 Live Demo
 
-🔗 Live URL: `Add your deployed URL`
+🔗 Live URL:https://rent-nest-client-five.vercel.app/
 
 ---
-
-## 📸 Project Screenshot
-
-_Add your screenshots here_
 
 ---
 
@@ -126,7 +122,6 @@ Admins can:
 Supported payment flow:
 
 - Stripe Checkout
-
 
 Payment pages:
 
