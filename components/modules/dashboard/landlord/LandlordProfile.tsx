@@ -84,7 +84,7 @@ export default function LandlordProfile({ user }: Props) {
       </div>
 
       {/* Stats */}
-      <div className="grid gap-6 md:grid-cols-3">
+      {/* <div className="grid gap-6 md:grid-cols-3">
         <div className="rounded-xl border bg-card p-6">
           <div className="flex items-center justify-between">
             <div>
@@ -120,7 +120,7 @@ export default function LandlordProfile({ user }: Props) {
             <Users className="h-10 w-10 text-blue-600" />
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* About */}
       <div className="rounded-xl border bg-card p-6">

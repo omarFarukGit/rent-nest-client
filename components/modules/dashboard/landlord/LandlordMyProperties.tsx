@@ -127,7 +127,9 @@ export default function LandlordMyProperties({ properties }: Props) {
             <div className="flex justify-between text-sm">
               <span>Rent</span>
 
-              <span className="font-medium">{currency} {property.price}/month</span>
+              <span className="font-medium">
+                {currency} {property.price}/month
+              </span>
             </div>
 
             <div className="flex items-center justify-between">
@@ -143,15 +145,26 @@ export default function LandlordMyProperties({ properties }: Props) {
         ))}
       </div>
 
-      <Pagination
-        page={properties.meta.page}
-        totalPages={properties.meta.totalPages}
-      />
+      {properties.data.length === 0 ? (
+        <div className="rounded-xl border bg-card py-16 text-center">
+          <h3 className="text-xl font-semibold">No properties found</h3>
 
-      {properties.data.length === 0 && (
-        <div className="py-16 text-center text-muted-foreground">
-          No properties found.
+          <p className="mt-2 text-sm text-muted-foreground">
+            You havenot added any rental properties yet.
+          </p>
+
+          <Button asChild className="mt-5">
+            <Link href="/landlord-dashboard/properties/create">
+              <Plus className="mr-2 h-4 w-4" />
+              Add Property
+            </Link>
+          </Button>
         </div>
+      ) : (
+        <Pagination
+          page={properties.meta.page}
+          totalPages={properties.meta.totalPages}
+        />
       )}
     </div>
   )

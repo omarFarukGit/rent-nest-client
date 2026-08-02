@@ -44,17 +44,17 @@ export const LANDLORD_SIDEBAR_ITEMS: ISidebarItem[] = [
     icon: Users,
   },
 
-  {
-    label: "Earnings",
-    href: "/landlord-dashboard/earnings",
-    icon: DollarSign,
-  },
+  // {
+  //   label: "Earnings",
+  //   href: "/landlord-dashboard/earnings",
+  //   icon: DollarSign,
+  // },
 
-  {
-    label: "Reviews",
-    href: "/landlord-dashboard/reviews",
-    icon: Star,
-  },
+  // {
+  //   label: "Reviews",
+  //   href: "/landlord-dashboard/reviews",
+  //   icon: Star,
+  // },
 
   {
     label: "Profile",

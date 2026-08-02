@@ -164,14 +164,18 @@ export default function LandlordRentalRequests({ requests }: Props) {
           </div>
         ))}
       </div>
-      <Pagination
-        page={requests.meta.page}
-        totalPages={requests.meta.totalPages}
-      />
+      {requests.data.length > 0 ? (
+        <Pagination
+          page={requests.meta.page}
+          totalPages={requests.meta.totalPages}
+        />
+      ) : (
+        <div className="rounded-xl border bg-card py-16 text-center">
+          <h3 className="text-xl font-semibold">No rental requests found</h3>
 
-      {requests.data.length === 0 && (
-        <div className="py-16 text-center text-muted-foreground">
-          No rental requests found.
+          <p className="mt-2 text-sm text-muted-foreground">
+            You do not have any rental requests yet.
+          </p>
         </div>
       )}
     </div>
