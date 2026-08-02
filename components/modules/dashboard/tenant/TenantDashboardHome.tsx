@@ -97,7 +97,7 @@ export default function TenantDashboardHome({ data }: Props) {
 
           <div className="mt-5 space-y-3">
             <Button className="w-full" asChild>
-              <Link href="/dashboard/properties">
+              <Link href="/properties">
                 <Search className="mr-2 h-4 w-4" />
                 Browse Properties
               </Link>
