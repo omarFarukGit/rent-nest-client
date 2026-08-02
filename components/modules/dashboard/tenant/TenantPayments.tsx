@@ -28,7 +28,7 @@ export default function TenantPayments({ payments }: Props) {
       </div>
 
       {/* Summary */}
-      <div className="grid gap-6 sm:grid-cols-3">
+      {/* <div className="grid gap-6 sm:grid-cols-3">
         <div className="rounded-xl border bg-card p-6">
           <p className="text-sm text-muted-foreground">Total Paid</p>
 
@@ -46,7 +46,7 @@ export default function TenantPayments({ payments }: Props) {
 
           <h2 className="mt-2 text-3xl font-bold">01 Aug 2026</h2>
         </div>
-      </div>
+      </div> */}
 
       {/* Payment History */}
       <div className="overflow-hidden rounded-xl border bg-card">
@@ -71,54 +71,75 @@ export default function TenantPayments({ payments }: Props) {
             </thead>
 
             <tbody>
-              {payments.data.map((payment) => (
-                <tr key={payment.id} className="border-t">
-                  <td className="p-4">
-                    <h3 className="font-medium">
-                      {payment.paymentDetails.propertyTitle}
-                    </h3>
+              {payments.data.length > 0 ? (
+                payments.data.map((payment) => (
+                  <tr key={payment.id} className="border-t">
+                    <td className="p-4">
+                      <h3 className="font-medium">
+                        {payment.paymentDetails.propertyTitle}
+                      </h3>
 
-                    <p className="text-sm text-muted-foreground">
-                      {`TNX_ID_${payment.transactionId.slice(10, 20)}`}
-                    </p>
-                  </td>
+                      <p className="text-sm text-muted-foreground">
+                        {`TNX_ID_${payment.transactionId.slice(10, 20)}`}
+                      </p>
+                    </td>
 
-                  <td className="p-4 font-semibold">{payment.amount}</td>
+                    <td className="p-4 font-semibold">${payment.amount}</td>
 
-                  <td className="p-4">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4" />
+                    <td className="p-4">
+                      <div className="flex items-center gap-2">
+                        <Calendar className="h-4 w-4" />
 
-                      {new Date(payment.createdAt).toLocaleDateString("en-GB", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      })}
+                        {new Date(payment.createdAt).toLocaleDateString(
+                          "en-GB",
+                          {
+                            day: "2-digit",
+                            month: "short",
+                            year: "numeric",
+                          }
+                        )}
+                      </div>
+                    </td>
+
+                    <td className="p-4">
+                      {payment.status === "PAID" ? (
+                        <span className="flex w-fit items-center gap-2 rounded-full bg-green-100 px-3 py-1 text-xs text-green-700">
+                          <CheckCircle className="h-3 w-3" />
+                          PAID
+                        </span>
+                      ) : (
+                        <span className="flex w-fit items-center gap-2 rounded-full bg-yellow-100 px-3 py-1 text-xs text-yellow-700">
+                          <Clock className="h-3 w-3" />
+                          PENDING
+                        </span>
+                      )}
+                    </td>
+
+                    <td className="p-4 text-right">
+                      <Button size="sm" variant="outline">
+                        <Download className="mr-2 h-4 w-4" />
+                        Receipt
+                      </Button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={5} className="py-12 text-center">
+                    <div className="flex flex-col items-center justify-center gap-3">
+                      <CreditCard className="h-12 w-12 text-muted-foreground" />
+
+                      <h3 className="text-lg font-semibold">
+                        No payments found
+                      </h3>
+
+                      <p className="text-sm text-muted-foreground">
+                        You have not made any payments yet.
+                      </p>
                     </div>
                   </td>
-
-                  <td className="p-4">
-                    {payment.status === "PAID" ? (
-                      <span className="flex w-fit items-center gap-2 rounded-full bg-green-100 px-3 py-1 text-xs text-green-700">
-                        <CheckCircle className="h-3 w-3" />
-                        PAID
-                      </span>
-                    ) : (
-                      <span className="flex w-fit items-center gap-2 rounded-full bg-yellow-100 px-3 py-1 text-xs text-yellow-700">
-                        <Clock className="h-3 w-3" />
-                        PENDING
-                      </span>
-                    )}
-                  </td>
-
-                  <td className="p-4 text-right">
-                    <Button size="sm" variant="outline">
-                      <Download className="mr-2 h-4 w-4" />
-                      Receipt
-                    </Button>
-                  </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>

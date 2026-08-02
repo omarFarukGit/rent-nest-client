@@ -19,7 +19,6 @@ type Props = {
   user?: TUser
 }
 export default function TenantProfile({ user }: Props) {
-
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -91,7 +90,7 @@ export default function TenantProfile({ user }: Props) {
       </div>
 
       {/* Statistics */}
-      <div className="grid gap-6 md:grid-cols-3">
+      {/* <div className="grid gap-6 md:grid-cols-3">
         <div className="rounded-xl border bg-card p-6">
           <div className="flex items-center justify-between">
             <div>
@@ -127,7 +126,7 @@ export default function TenantProfile({ user }: Props) {
             <User className="h-10 w-10 text-green-600" />
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* About */}
       <div className="rounded-xl border bg-card p-6">
