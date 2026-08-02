@@ -15,6 +15,7 @@ type Props = {
 }
 
 export default function ManageProperties({ properties }: Props) {
+  const currency = process.env.NEXT_PUBLIC_CURRENCY
   const [isPending, startTransition] = useTransition()
 
   const handleDeleteProperty = (propertyId: string) => {
@@ -103,7 +104,10 @@ export default function ManageProperties({ properties }: Props) {
               <div className="flex justify-between">
                 <span className="text-sm text-muted-foreground">Price</span>
 
-                <span className="font-medium">${property.price}/month</span>
+                <span className="font-medium">
+                  {currency}
+                  {property.price}/month
+                </span>
               </div>
 
               <div className="flex justify-between">

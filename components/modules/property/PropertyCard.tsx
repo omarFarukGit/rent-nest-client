@@ -35,6 +35,7 @@ type Props = {
 }
 
 export default function PropertyCard({ property }: Props) {
+  const currency = process.env.NEXT_PUBLIC_CURRENCY
   const [wishlist, setWishlist] = useState(false)
 
   return (
@@ -93,7 +94,7 @@ export default function PropertyCard({ property }: Props) {
 
         <div className="flex items-center justify-between">
           <h3 className="text-2xl font-bold text-primary">
-            $ {property.price.toLocaleString()}
+            {currency} {property.price.toLocaleString()}
           </h3>
 
           <span className="text-sm text-muted-foreground">/month</span>

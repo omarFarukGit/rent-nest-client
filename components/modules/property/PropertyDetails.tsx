@@ -60,6 +60,7 @@ type Props = {
 }
 
 export default function PropertyDetails({ property, userExits }: Props) {
+  const currency = process.env.NEXT_PUBLIC_CURRENCY
   return (
     <div className="space-y-10">
       {/* Image Gallery */}
@@ -120,7 +121,7 @@ export default function PropertyDetails({ property, userExits }: Props) {
             <p className="text-muted-foreground">Price</p>
 
             <h2 className="text-3xl font-bold text-primary">
-              $ {Number(property.price).toLocaleString()}
+              {currency} {Number(property.price).toLocaleString()}
             </h2>
           </div>
 
