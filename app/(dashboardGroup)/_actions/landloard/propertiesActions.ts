@@ -50,6 +50,7 @@ export async function createProperty(prevState: any, formData: FormData) {
     price: Number(formData.get("price")),
     location: formData.get("location"),
     categoryName: formData.get("categoryName"),
+    categoryId: formData.get("categoryId"),
     bedrooms: Number(formData.get("bedrooms")),
     bathrooms: Number(formData.get("bathrooms")),
     size: Number(formData.get("size")),

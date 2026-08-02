@@ -2,7 +2,10 @@
 
 import AddPropertyForm from "@/components/modules/dashboard/landlord/AddPropertyForm"
 
-export default function AddPropertyPage() {
-  return <AddPropertyForm />
-  
+import { getAllCategory } from "@/services/category"
+
+export default async function AddPropertyPage() {
+  const categories = await getAllCategory()
+
+  return <AddPropertyForm categories={categories.data} />
 }

@@ -1,77 +1,37 @@
-"use client"
-
 import Link from "next/link"
-import {
-  Heart,
-  Home,
-  FileText,
-  CreditCard,
-  Search,
-  ArrowRight,
-} from "lucide-react"
+
+import { Home, FileText, CreditCard, Search, ArrowRight } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 
-const stats = [
-  {
-    title: "Rental Requests",
-    value: "8",
-    icon: FileText,
-  },
-  {
-    title: "Active Rentals",
-    value: "2",
-    icon: Home,
-  },
-  {
-    title: "Wishlist",
-    value: "15",
-    icon: Heart,
-  },
-  {
-    title: "Total Payments",
-    value: "$2,500",
-    icon: CreditCard,
-  },
-]
+type Props = {
+  data: {
+    rentalRequests: number
+    activeRentals: number
+    totalPayments: number
+  }
+}
 
-const rentalRequests = [
-  {
-    property: "Modern Family Apartment",
-    location: "Dhanmondi, Dhaka",
-    status: "PENDING",
-  },
-  {
-    property: "Luxury Villa",
-    location: "Uttara, Dhaka",
-    status: "APPROVED",
-  },
-  {
-    property: "Office Space",
-    location: "Gulshan, Dhaka",
-    status: "REJECTED",
-  },
-]
+export default function TenantDashboardHome({ data }: Props) {
+  const currency = process.env.NEXT_PUBLIC_CURRENCY
+  const stats = [
+    {
+      title: "Rental Requests",
+      value: data.rentalRequests,
+      icon: FileText,
+    },
+    {
+      title: "Active Rentals",
+      value: data.activeRentals,
+      icon: Home,
+    },
+    {
+      title: "Total Payments",
+      value: `${currency}${data.totalPayments}`,
+      icon: CreditCard,
+    },
+  ]
 
-const properties = [
-  {
-    title: "Beautiful Apartment",
-    location: "Mirpur, Dhaka",
-    rent: "$350/month",
-  },
-  {
-    title: "Family House",
-    location: "Banani, Dhaka",
-    rent: "$600/month",
-  },
-  {
-    title: "Small Studio",
-    location: "Bashundhara",
-    rent: "$250/month",
-  },
-]
-
-export default function TenantDashboardHome() {
   return (
     <div className="space-y-8">
       {/* Welcome */}
@@ -84,12 +44,15 @@ export default function TenantDashboardHome() {
       </div>
 
       {/* Stats */}
-      <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-6 sm:grid-cols-3 xl:grid-cols-3">
         {stats.map((item) => {
           const Icon = item.icon
 
           return (
-            <div key={item.title} className="rounded-xl border bg-card p-6">
+            <div
+              key={item.title}
+              className="rounded-xl border bg-card p-6 transition hover:shadow-md"
+            >
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">{item.title}</p>
@@ -109,6 +72,7 @@ export default function TenantDashboardHome() {
       {/* Main Grid */}
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Rental Requests */}
+
         <div className="rounded-xl border bg-card p-6 lg:col-span-2">
           <div className="mb-5 flex items-center justify-between">
             <h2 className="text-xl font-semibold">Recent Rental Requests</h2>
@@ -121,37 +85,13 @@ export default function TenantDashboardHome() {
             </Button>
           </div>
 
-          <div className="space-y-4">
-            {rentalRequests.map((item, index) => (
-              <div
-                key={index}
-                className="flex items-center justify-between rounded-lg border p-4"
-              >
-                <div>
-                  <h3 className="font-medium">{item.property}</h3>
-
-                  <p className="text-sm text-muted-foreground">
-                    {item.location}
-                  </p>
-                </div>
-
-                <span
-                  className={`rounded-full px-3 py-1 text-xs ${
-                    item.status === "APPROVED"
-                      ? "bg-green-100 text-green-700"
-                      : item.status === "REJECTED"
-                        ? "bg-red-100 text-red-700"
-                        : "bg-yellow-100 text-yellow-700"
-                  } `}
-                >
-                  {item.status}
-                </span>
-              </div>
-            ))}
+          <div className="rounded-lg border p-5 text-center text-sm text-muted-foreground">
+            No recent rental requests
           </div>
         </div>
 
-        {/* Quick Action */}
+        {/* Quick Actions */}
+
         <div className="rounded-xl border bg-card p-6">
           <h2 className="text-xl font-semibold">Quick Actions</h2>
 
@@ -164,9 +104,9 @@ export default function TenantDashboardHome() {
             </Button>
 
             <Button variant="outline" className="w-full" asChild>
-              <Link href="/dashboard/wishlist">
-                <Heart className="mr-2 h-4 w-4" />
-                My Wishlist
+              <Link href="/dashboard/payments">
+                <CreditCard className="mr-2 h-4 w-4" />
+                Payment History
               </Link>
             </Button>
           </div>
@@ -174,31 +114,18 @@ export default function TenantDashboardHome() {
       </div>
 
       {/* Recommended Properties */}
+
       <div>
         <div className="mb-5 flex justify-between">
           <h2 className="text-xl font-semibold">Recommended Properties</h2>
 
           <Button variant="ghost" asChild>
-            <Link href="/dashboard/properties">View More</Link>
+            <Link href="/properties">View More</Link>
           </Button>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-3">
-          {properties.map((property, index) => (
-            <div key={index} className="rounded-xl border bg-card p-5">
-              <h3 className="font-semibold">{property.title}</h3>
-
-              <p className="mt-2 text-sm text-muted-foreground">
-                {property.location}
-              </p>
-
-              <p className="mt-3 font-medium">{property.rent}</p>
-
-              <Button className="mt-4 w-full" variant="outline">
-                View Details
-              </Button>
-            </div>
-          ))}
+        <div className="rounded-xl border bg-card p-6 text-center text-sm text-muted-foreground">
+          Explore properties and find your next home 🏠
         </div>
       </div>
     </div>

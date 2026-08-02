@@ -1,10 +1,16 @@
-// app/dashboard/page.tsx
-
 import TenantDashboardHome from "@/components/modules/dashboard/tenant/TenantDashboardHome";
+import { getTenantDashboardStats } from "../_actions/tenant/tenantDashboardActions";
 
 
-export default function DashboardPage() {
+
+export default async function DashboardPage() {
+
+  const result = await getTenantDashboardStats();
+
+
   return (
-    <TenantDashboardHome />
+    <TenantDashboardHome
+      data={result.data}
+    />
   );
 }

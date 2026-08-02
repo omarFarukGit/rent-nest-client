@@ -25,7 +25,16 @@ const initialState = {
   message: "",
 }
 
-export default function AddPropertyForm() {
+type Category = {
+  id: string
+  name: string
+}
+
+type Props = {
+  categories: Category[]
+}
+
+export default function AddPropertyForm({ categories }: Props) {
   const router = useRouter()
 
   const [state, action, pending] = useActionState(createProperty, initialState)
@@ -69,18 +78,17 @@ export default function AddPropertyForm() {
               <label>Category</label>
 
               <select
-                name="categoryName"
+                name="categoryId"
                 className="h-10 w-full rounded-md border px-3"
+                required
               >
-                <option value="Apartment">Apartment</option>
+                <option value="">Select Category</option>
 
-                <option value="House">House</option>
-
-                <option value="Villa">Villa</option>
-
-                <option value="Office">Office</option>
-
-                <option value="Land">Land</option>
+                {categories.slice(1).map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
               </select>
             </div>
 
