@@ -42,6 +42,8 @@ export const deleteProperty = async (id: string) => {
   const result = await res.json()
   if (result.success) {
     revalidateTag("adminProperties", { expire: 0 })
+    revalidateTag("properties", { expire: 0 })
+
   }
   return result
 }
