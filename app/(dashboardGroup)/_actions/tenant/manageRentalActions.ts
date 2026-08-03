@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server"
 
+import { revalidateTag } from "next/cache"
 import { cookies } from "next/headers"
 
 export const getRentalStats = async () => {
@@ -31,6 +32,10 @@ export const getMyRentalRequest = async () => {
         Cookie: `accessToken=${accessToken}`,
       },
       cache: "no-cache",
+      next: {
+        revalidate: 3600,
+        tags: ["my-requests"],
+      },
     }
   )
   const result = await res.json()
@@ -55,6 +60,9 @@ export const cancelRentalRequest = async (id: string) => {
   )
   const result = await res.json()
 
+  if (result.success) {
+    revalidateTag("my-requests", { expire: 0 })
+  }
   return result
 }
 
@@ -72,16 +80,14 @@ export const createRentalRequest = async (
     message: formData.get("message") as string,
   }
 
-
-
-const res = await fetch(`${process.env.BACKEND_URL}/api/rentals`, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    Cookie: `accessToken=${accessToken}`,
-  },
-  body: JSON.stringify(payload),
-})
+  const res = await fetch(`${process.env.BACKEND_URL}/api/rentals`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: `accessToken=${accessToken}`,
+    },
+    body: JSON.stringify(payload),
+  })
   const result = await res.json()
 
   return result
