@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // app/properties/[id]/page.tsx
 
 import PropertyDetails from "@/components/modules/property/PropertyDetails"
-import { getProperty } from "../../_actions/popertyActions"
+import { getAllProperties, getProperty } from "../../_actions/popertyActions"
 import PropertyNotFound from "../../_components/PropertyNotFound"
 import { getMe } from "@/services/getMe"
 
@@ -26,4 +27,11 @@ export default async function PropertyDetailsPage({
       <PropertyDetails property={result.data} userExits={user.success} />
     </div>
   )
+}
+
+export async function generateStaticParams() {
+  const properties = await getAllProperties()
+  return properties?.data.map((property: any) => ({
+    id: String(property.id),
+  }))
 }

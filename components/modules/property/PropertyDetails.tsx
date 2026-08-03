@@ -16,7 +16,7 @@ import {
 import { Button } from "@/components/ui/button"
 import RentalRequestModal from "../dashboard/tenant/RentalRequestModal"
 
-type PropertyDetailsType = {
+export type PropertyDetailsType = {
   id: string
   title: string
   description: string
