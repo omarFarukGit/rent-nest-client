@@ -6,6 +6,7 @@ import HowItWorks from "@/components/modules/home/HowItWorks"
 import TenantLandlordSection from "@/components/modules/home/TenantLandlordSection"
 import Testimonials from "@/components/modules/home/Testimonials"
 import WhyRentNest from "@/components/modules/home/WhyRentNest"
+
 import { getAllCategory } from "@/services/category"
 import { TCategoriesResponse } from "@/types/CategoryType"
 

@@ -92,7 +92,7 @@ export async function proxy(request: NextRequest) {
   if (pathName.startsWith("/dashboard") && userRole !== "TENANT") {
     return NextResponse.redirect(new URL("/", request.url))
   } else if (
-    pathName.startsWith("/landloard-dashboard") &&
+    pathName.startsWith("/landlord-dashboard") &&
     userRole !== "LANDLORD"
   ) {
     return NextResponse.redirect(new URL("/", request.url))

@@ -20,6 +20,7 @@ import { toast } from "sonner"
 import { Button } from "../ui/button"
 import { TUser } from "@/types/UserType"
 import { logout } from "@/services/logOut"
+import { ModeToggle } from "./ModeToggle"
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -62,119 +63,111 @@ export function Navbar({ user }: Props) {
   }
 
   return (
-    <nav className="sticky top-0 z-50 container mx-auto w-full border-b bg-white/10 backdrop-blur-xl dark:bg-black/20">
-      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
-          {/* Logo */}
+    <nav className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-xl">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        {/* Logo */}
+        <Link href="/" className="shrink-0">
+          <span className="text-2xl font-bold text-primary">Rent Nest</span>
+        </Link>
 
-          <Link href="/" className="shrink-0">
-            <span className="text-2xl font-bold text-primary">Rent Nest</span>
-          </Link>
+        {/* Desktop Navigation */}
+        <div className="hidden items-center gap-8 md:flex">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="text-sm font-medium transition-colors hover:text-primary"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
 
-          {/* Desktop Navigation */}
+        <div className="flex items-center gap-3">
+          {/* Theme Toggle */}
+          <ModeToggle />
 
-          <div className="hidden items-center gap-8 md:flex">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="text-sm font-medium transition-colors hover:text-primary"
-              >
-                {item.label}
-              </Link>
-            ))}
+          {/* Mobile Menu */}
+          <div className="md:hidden">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="cursor-pointer">
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+
+              <SheetContent side="right">
+                <div className="mt-8 flex flex-col gap-5">
+                  {navItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="pl-2 text-lg font-medium hover:text-primary"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
 
-          <div className="flex items-center gap-3">
-            {/* Mobile Menu */}
-
-            <div className="md:hidden">
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button
-                    className="cursor-pointer"
-                    variant="ghost"
-                    size="icon"
-                  >
-                    <Menu className="h-5 w-5 cursor-pointer" />
-                  </Button>
-                </SheetTrigger>
-
-                <SheetContent side="right">
-                  <div className="mt-8 flex flex-col gap-5">
-                    {navItems.map((item) => (
-                      <Link
-                        key={item.href}
-                        href={item.href}
-                        className="pl-2 text-lg font-medium hover:text-primary"
-                      >
-                        {item.label}
-                      </Link>
-                    ))}
+          {/* User Dropdown */}
+          {user && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="cursor-pointer">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
+                    <User className="h-4 w-4 text-primary" />
                   </div>
-                </SheetContent>
-              </Sheet>
-            </div>
+                </button>
+              </DropdownMenuTrigger>
 
-            {/* User Dropdown */}
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col gap-1">
+                    <p className="text-sm font-medium">{user.name}</p>
 
-            {user && (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <div className="cursor-pointer">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
-                      <User className="h-4 w-4 text-primary" />
-                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      {user.email}
+                    </p>
                   </div>
-                </DropdownMenuTrigger>
+                </DropdownMenuLabel>
 
-                <DropdownMenuContent align="end" className="w-56">
-                  <DropdownMenuLabel className="font-normal">
-                    <div className="flex flex-col gap-1">
-                      <p className="text-sm font-medium">{user.name}</p>
+                <DropdownMenuSeparator />
 
-                      <p className="text-xs text-muted-foreground">
-                        {user.email}
-                      </p>
-                    </div>
-                  </DropdownMenuLabel>
+                {userMenuItems.map((item) => {
+                  const Icon = item.icon
 
-                  <DropdownMenuSeparator />
+                  return (
+                    <DropdownMenuItem
+                      key={item.action}
+                      onClick={() => handleMenuAction(item.action)}
+                    >
+                      <Icon className="mr-2 h-4 w-4" />
 
-                  {userMenuItems.map((item) => {
-                    const Icon = item.icon
+                      <span>{item.label}</span>
+                    </DropdownMenuItem>
+                  )
+                })}
 
-                    return (
-                      <DropdownMenuItem
-                        key={item.action}
-                        onClick={() => handleMenuAction(item.action)}
-                      >
-                        <Icon className="mr-2 h-4 w-4" />
+                <DropdownMenuSeparator />
 
-                        <span>{item.label}</span>
-                      </DropdownMenuItem>
-                    )
-                  })}
+                <DropdownMenuItem onClick={() => handleMenuAction("logout")}>
+                  <LogOut className="mr-2 h-4 w-4" />
 
-                  <DropdownMenuSeparator />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
 
-                  <DropdownMenuItem onClick={() => handleMenuAction("logout")}>
-                    <LogOut className="mr-2 h-4 w-4" />
-
-                    <span>Log out</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            )}
-
-            {/* Login Button */}
-
-            {!user && (
-              <Link href="/login">
-                <Button>Login</Button>
-              </Link>
-            )}
-          </div>
+          {/* Login Button */}
+          {!user && (
+            <Link href="/login">
+              <Button>Login</Button>
+            </Link>
+          )}
         </div>
       </div>
     </nav>
